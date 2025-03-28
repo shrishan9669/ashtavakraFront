@@ -28,7 +28,7 @@ export default function PaymentConfirm(){
    async function Makepurchase(){
     try{
        const make = await axios({
-        url:'http://localhost:3000/user/addpurchase',
+        url:'https://ashtabackend.onrender.com/user/addpurchase',
         data:{
             name:name,number:number,transactionid:transactionid
         },
@@ -52,7 +52,7 @@ export default function PaymentConfirm(){
      console.log("The image is here-> " + file);
     try{
        await axios({
-        url:"http://localhost:3000/user/sendMail",
+        url:"https://ashtabackend.onrender.com/user/sendMail",
         headers:{
             "Content-Type": "multipart/form-data"
         },
