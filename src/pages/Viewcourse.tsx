@@ -6,7 +6,7 @@ export default function View(){
     async function Getlatest(){
         try{
             const res = await axios({
-                url:'http://localhost:3000/user/getlatestlink',
+                url:'https://ashtabackend.onrender.com/user/getlatestlink',
                 method:'GET'
             })
 
