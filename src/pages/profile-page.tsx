@@ -9,7 +9,7 @@ export default function Profilepage(){
     async function Getdemodetails(){
            try{
               const access = await axios({
-                url:`http://localhost:3000/user/checkDemoaccess?id=${localStorage.getItem('userid')}`,
+                url:`https://ashtabackend.onrender.com/user/checkDemoaccess?id=${localStorage.getItem('userid')}`,
                 method:'GET'
               })
               if(access.data && access.data.success){
@@ -31,7 +31,7 @@ export default function Profilepage(){
     async function SetAccessfalseAfterExpired(){
         try{
             await axios({
-                url:`http://localhost:3000/user/setAccessfalse?id=${localStorage.getItem('userid')}`,
+                url:`https://ashtabackend.onrender.com/user/setAccessfalse?id=${localStorage.getItem('userid')}`,
                 method:'PUT'
             })
         }
@@ -76,7 +76,7 @@ export default function Profilepage(){
     }
     try{
          await axios({
-            url:"http://localhost:3000/user/start-demo",
+            url:"https://ashtabackend.onrender.com/user/start-demo",
             data:{
                 userid:localStorage.getItem('userid')
             }
@@ -97,7 +97,7 @@ const [payVarified,setPayvarified] = useState(false)
 async function IsPaymentVerified(){
     try{
        const Permit = await axios({
-        url:`http://localhost:3000/user/IsPayVerified?number=${localStorage.getItem('number')}`
+        url:`https://ashtabackend.onrender.com/user/IsPayVerified?number=${localStorage.getItem('number')}`
        })
        if(Permit.data && Permit.data.success){
         setPayvarified(true)
@@ -191,7 +191,7 @@ export function General(){
    async function Userdetails(){
         try{
               const res = await axios({
-                url:`http://localhost:3000/user/details?number=${localStorage.getItem('number')}`,
+                url:`https://ashtabackend.onrender.com/user/details?number=${localStorage.getItem('number')}`,
                headers:{
                 Authorization:`Bearer ${localStorage.getItem('token')}`
                },
@@ -238,7 +238,7 @@ export function Security(){
    async function Changepassword(){
         try{
            const find = await axios({
-            url:`http://localhost:3000/user/details?number=${localStorage.getItem('number')}`,
+            url:`https://ashtabackend.onrender.com/user/details?number=${localStorage.getItem('number')}`,
             method:'GET',
             headers:{
                 Authorization:`Bearer ${localStorage.getItem('token')}`
@@ -259,7 +259,7 @@ export function Security(){
             else{
                 try{
                     const changepassword = await axios({
-                        url:'http://localhost:3000/user/changepassword',
+                        url:'https://ashtabackend.onrender.com/user/changepassword',
                         data:{number:localStorage.getItem('number'),newpass:confirm},
                         method:'PUT',
                         headers:{
