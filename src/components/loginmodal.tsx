@@ -165,7 +165,7 @@ export const SignupModal = ({isOpen,onClose}:any) => {
                
               try{
                   const res = await axios({
-                      url:"http://localhost:3000/user/createuser",
+                      url:"https://ashtabackend.onrender.com/user/createuser",
                       method:"POST",
                       data:{
                         email,password,name,number:phone,role:"student"
@@ -299,7 +299,7 @@ export const SignupModal = ({isOpen,onClose}:any) => {
                
               try{
                   const res = await axios({
-                      url:"http://localhost:3000/user/createuser",
+                      url:"https://ashtabackend.onrender.com/user/createuser",
                       method:"POST",
                       data:{
                         email,password,name,number:phone,role:"teacher"
@@ -388,7 +388,7 @@ export const MobileNumberModal = ({onClose,isOpen}:any)=>{
                 
                 try{
                   const user = await axios({
-                    url:"http://localhost:3000/user/checknumber",
+                    url:"https://ashtabackend.onrender.com/user/checknumber",
                     data:{
                       number
                     },
@@ -452,7 +452,7 @@ function Aftermobile({onClose,isOpen}:any){
       onClick={async()=>{
          try{
             const res = await axios({
-              url:'http://localhost:3000/user/send-otp',
+              url:'https://ashtabackend.onrender.com/user/send-otp',
               data:{
                 phonenumber:localStorage.getItem('number')
               },
@@ -524,7 +524,7 @@ function Loginwithpassword ({onClose,isOpen}:any){
       }
       try{
         const res = await axios({
-          url:`http://localhost:3000/user/checkpassword?password=${password}&number=${localStorage.getItem('number')}`,
+          url:`https://ashtabackend.onrender.com/user/checkpassword?password=${password}&number=${localStorage.getItem('number')}`,
          
           method:'GET'
         })
