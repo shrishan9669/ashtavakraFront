@@ -12,7 +12,7 @@ export default function Admin(){
         setLoading1(true)
         try{
               const res = await axios({
-                url:'http://localhost:3000/user/getpending',
+                url:'https://ashtabackend.onrender.com/user/getpending',
                 method:'GET'
               })
 
@@ -71,7 +71,7 @@ export default function Admin(){
                         setLoading(true);
                         try{
                            const res = await axios({
-                            url:'http://localhost:3000/user/linkpasting',
+                            url:'https://ashtabackend.onrender.com/user/linkpasting',
                             data:{
                                 link:link
                             },
@@ -119,7 +119,7 @@ export default function Admin(){
                          setLoadingObj((prev:any)=> ({...prev,[e.id]:true}))
                         try{
                                 await axios({
-                                url:`http://localhost:3000/user/varifytrue?id=${e.id}`,
+                                url:`https://ashtabackend.onrender.com/user/varifytrue?id=${e.id}`,
                                 method:'PUT'
                                })
 
