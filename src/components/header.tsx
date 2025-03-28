@@ -8,7 +8,7 @@ export default function Header({onSignupclick,onLoginclick}:HeaderProps){
     return (
         <header className={`bg-white  w-full ${(['/courses','/profile-page','/admin','/view','/paymentdetails'].includes(location.pathname)) === true ? '':'fixed'}  shadow-lg py-2 px-32 flex justify-between items-center`}>
         <div className="flex items-center space-x-3">
-          <img src="../public/logo.jpg" alt="Vive Logo" className="h-20 rounded-full w-20" />
+          <img src="./logo.jpg" alt="Vive Logo" className="h-20 rounded-full w-20" />
           <span className="text-xl flex flex-col font-bold text-gray-800">अष्टावक्र <span>अकैडमी</span></span>
         </div>
 
