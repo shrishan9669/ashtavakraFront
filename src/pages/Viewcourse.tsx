@@ -1,68 +1,94 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 
-export default function View(){
-    const [link,setLink] = useState('')
-    async function Getlatest(){
-        try{
+export default function View() {
+    const [link, setLink] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    async function Getlatest() {
+        try {
+            setLoading(true);
             const res = await axios({
-                url:'https://ashtabackend.onrender.com/user/getlatestlink',
-                method:'GET'
-            })
+                url: 'https://ashtabackend.onrender.com/user/getlatestlink',
+                method: 'GET'
+            });
 
-            if(res.data && res.data.link){
+            if (res.data && res.data.link) {
                 setLink(res.data.link);
+                setError('');
+            } else {
+                setError('No live session scheduled');
             }
-        }
-        catch(err){
+        } catch (err) {
             console.log(err);
+            setError('Failed to fetch live link');
+        } finally {
+            setLoading(false);
         }
     }
 
-      // Auto-fetch latest link every 5 seconds
-  useEffect(() => {
-    Getlatest(); // Component mount hote hi call karega
+    useEffect(() => {
+        Getlatest();
+        const interval = setInterval(Getlatest, 10000);
+        return () => clearInterval(interval);
+    }, []);
 
-    const interval = setInterval(() => {
-      Getlatest();
-    }, 5000);
-
-    return () => clearInterval(interval); // Component unmount hone pe interval cleanup karega
-  }, []);
     return (
-        <div>
-        {/* Recorded Lectures */}
-        <div className="flex justify-center p-5 bg-slate-200 font-bold">
-          <h1>Recorded lectures coming soon . . . .</h1>
+        <div className="min-h-screen flex flex-col">
+            {/* Recorded Lectures Notice */}
+            <div className="bg-slate-200 p-4 text-center">
+                <h1 className="font-bold text-sm sm:text-base md:text-lg">
+                    Recorded lectures coming soon...
+                </h1>
+            </div>
+
+            {/* Main Content */}
+            <div className="flex flex-col lg:flex-row flex-1 bg-slate-100">
+                {/* Course Image - Full width on mobile, 70% on desktop */}
+                <div className="w-full lg:w-[70%] h-64 sm:h-80 md:h-96 lg:h-auto">
+                    <img 
+                        src="./mathandscience.webp" 
+                        className="w-full h-full object-cover object-center" 
+                        alt="Math and Science Course" 
+                    />
+                </div>
+
+                {/* Live Class Section - Full width on mobile, 30% on desktop */}
+                <div className="w-full lg:w-[30%] flex flex-col items-center justify-center p-6 sm:p-8 md:p-10 gap-6">
+                    <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-800">
+                        Live Class
+                    </h2>
+                    
+                    {loading ? (
+                        <div className="flex items-center gap-3">
+                            <FaSpinner className="animate-spin text-blue-500" />
+                            <span>Checking for live session...</span>
+                        </div>
+                    ) : error ? (
+                        <p className="text-red-500 font-medium text-center">{error}</p>
+                    ) : link ? (
+                        <a
+                            href={link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-pink-500 hover:bg-pink-600 text-white font-medium px-6 py-3 sm:px-8 sm:py-4 rounded-full transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-1 text-center w-full max-w-xs"
+                        >
+                            Join Live Class Now
+                        </a>
+                    ) : (
+                        <p className="text-gray-600 text-center">
+                            No live session available at the moment
+                        </p>
+                    )}
+
+                    <div className="text-sm text-gray-500 text-center mt-4">
+                        <p>Auto-refreshing every 10 seconds...</p>
+                        <p className="mt-2">Next check: {new Date(Date.now() + 10000).toLocaleTimeString()}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-  {/* image and link */}
-
-  <div className="flex h-[550px] w-screen  bg-slate-100">
-
-{/* img */}
-    <div className="h-full w-[70%]">
-        <img src="./mathandscience.webp" className="h-full" alt="" />
-    </div>
-
-
-    {/* Live Class Button */}
-    <div className="flex w-[30%]  justify-start items-center">
-          {link ? (
-            <a
-              href={link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-pink-500 px-5 py-3  rounded-full hover:bg-pink-600 text-white hover:font-medium"
-            >
-              Attend Live
-            </a>
-          ) : (
-            <p className="text-red-500 font-bold">No latest link for this course</p>
-          )}
-        </div>
-
-  </div>
-        
-      </div>
-    )
+    );
 }
