@@ -68,13 +68,16 @@ export default function Profilepage() {
     async function Startdemo() {
         if (timeLeft.includes('expired')) return;
         try {
-            await axios({
+           const Demo =  await axios({
                 url: "https://ashtabackend.onrender.com/user/start-demo",
                 data: {
                     userid: localStorage.getItem('userid')
                 },
                 method: "POST"
             });
+            if(Demo.data && Demo.data.success){
+                window.location.href = '/profile-page'
+            }
         } catch (err) {
             console.log(err);
         }
