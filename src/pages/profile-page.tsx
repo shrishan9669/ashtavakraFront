@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import Loader from "../components/loader";
 
 export default function Profilepage() {
     const [selected, setSelected] = useState('purchase');
@@ -67,6 +68,7 @@ export default function Profilepage() {
 
     async function Startdemo() {
         if (timeLeft.includes('expired')) return;
+        setLoading(true)
         try {
            const Demo =  await axios({
                 url: "https://ashtabackend.onrender.com/user/start-demo",
@@ -80,6 +82,9 @@ export default function Profilepage() {
             }
         } catch (err) {
             console.log(err);
+        }
+        finally{
+            setLoading(false)
         }
     }
 
@@ -100,6 +105,7 @@ export default function Profilepage() {
         IsPaymentVerified();
     }, []);
 
+    const[loading,setLoading]  = useState(false)
     return (
         <div className="p-4 sm:p-6 md:p-10 lg:p-14 w-full max-w-7xl mx-auto">
             {/* Demo Access Section */}
@@ -119,7 +125,7 @@ export default function Profilepage() {
                                 disabled={timeLeft.includes('expired')}
                                 className={`bg-blue-400 ${timeLeft.includes('expired') ? 'bg-gray-400 cursor-not-allowed' : 'hover:bg-blue-500'} px-4 py-2 rounded-full text-white font-medium transition-colors duration-200`}
                             >
-                                Start Demo
+                                {loading ? <Loader/>:"Start Demo"}
                             </button>
                         </div>
                     )}
