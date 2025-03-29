@@ -2,6 +2,7 @@ import axios from 'axios';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import  {useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import Loader from './loader';
 
 
 function UserOrTeacherSignup({setUserteacher,onClose,isOpen}:any){
@@ -38,6 +39,7 @@ export const SignupModal = ({isOpen,onClose}:any) => {
 
     const [error,setError] = useState('');
     const[emailmsg,setEmailmsg] = useState('');
+    const[loading,setLoading]  = useState(false)
     
     // Regex for validating phone number in xxx-xxx-xxxx format
     const phoneNumberRegex = /^[7-9]{1}[0-9]{9}$/;
@@ -163,6 +165,7 @@ export const SignupModal = ({isOpen,onClose}:any) => {
                 return ;
               }
                
+              setLoading(true)
               try{
                   const res = await axios({
                       url:"https://ashtabackend.onrender.com/user/createuser",
@@ -181,12 +184,15 @@ export const SignupModal = ({isOpen,onClose}:any) => {
                   console.log(err);
                   alert(err)
               }
+              finally{
+                setLoading(false)
+              }
                    
             }}
               type="submit"
               className="w-full bg-blue-600 text-white cursor-pointer transition-all duration-300 p-3 rounded-lg hover:bg-blue-700 "
             >
-              Sign Up
+              {loading ? <Loader/>:'Sign up'}
             </button>
             <div className='flex justify-center'><span className='text-green-400'>{msg}</span>
             </div>
@@ -296,7 +302,7 @@ export const SignupModal = ({isOpen,onClose}:any) => {
                 alert("All fields are required!!");
                 return ;
               }
-               
+                setLoading(true)
               try{
                   const res = await axios({
                       url:"https://ashtabackend.onrender.com/user/createuser",
@@ -315,12 +321,15 @@ export const SignupModal = ({isOpen,onClose}:any) => {
                   console.log(err);
                   alert(err)
               }
+              finally{
+                setLoading(false)
+              }
                    
             }}
               type="submit"
               className="w-full bg-blue-600 text-white cursor-pointer transition-all duration-300 p-3 rounded-lg hover:bg-blue-700 "
             >
-              Sign Up
+              {loading  ? <Loader/>:"Sign up"}
             </button>
             <div className='flex justify-center'><span className='text-green-400'>{msg}</span>
             </div>
@@ -343,6 +352,7 @@ export const MobileNumberModal = ({onClose,isOpen}:any)=>{
   const [next,setNext] = useState(false);
   const [number,SetNumber] = useState('')
   const[msg,setMsg] = useState('')
+  const [loading,setLoading] = useState(false)
   const phoneNumberRegex = /^[7-9]{1}[0-9]{9}$/;
   function handlenumberchange(e:any){
           SetNumber(e.target.value)
@@ -386,6 +396,7 @@ export const MobileNumberModal = ({onClose,isOpen}:any)=>{
                 return ;
               }
                 
+              setLoading(true)
                 try{
                   const user = await axios({
                     url:"https://ashtabackend.onrender.com/user/checknumber",
@@ -397,7 +408,7 @@ export const MobileNumberModal = ({onClose,isOpen}:any)=>{
 
                   if(user.data && user.data.status){
                     localStorage.setItem('number',number)
-                    
+                    localStorage.setItem('role',user.data.role)
                     setNext(true)
                   }
                   else setMsg(`Mobile number doesn't exist!!`)
@@ -407,7 +418,10 @@ export const MobileNumberModal = ({onClose,isOpen}:any)=>{
                   console.log(err)
                   alert(err)
                 }
-            }} className='px-5 py-3 cursor-pointer hover:bg-blue-600 rounded-full text-white bg-blue-500 text-lg'>Next</button>
+                finally{
+                  setLoading(false)
+                }
+            }} className='px-5 py-3 cursor-pointer hover:bg-blue-600 rounded-full text-white bg-blue-500 text-lg'>{loading ? <Loader/>:"Next"}</button>
           </div>
         </div>
        
@@ -420,6 +434,7 @@ function Aftermobile({onClose,isOpen}:any){
   if(!isOpen) return null;
   const [withpassword,setWithpassword] = useState(false)
   const [withOtp,setWithOtp] = useState(false)
+  const[loading,setLoading] = useState(false)
   // credentials to be send through component
   const [token,setToken] = useState('')
    const [userid,setuserId] = useState('');
@@ -448,8 +463,9 @@ function Aftermobile({onClose,isOpen}:any){
     <div className='flex justify-center'>
       <button
       // Sending Otp
-
+    
       onClick={async()=>{
+        setLoading(true)
          try{
             const res = await axios({
               url:'https://ashtabackend.onrender.com/user/send-otp',
@@ -469,8 +485,11 @@ function Aftermobile({onClose,isOpen}:any){
           console.log(err);
           alert(err)
          }
+         finally{
+          setLoading(false)
+         }
       }}
-      className='bg-blue-500 p-3 cursor-pointer  text-white text-lg hover:bg-blue-600 w-[90%] rounded-full'>Login with OTP</button>
+      className='bg-blue-500 p-3 cursor-pointer  text-white text-lg hover:bg-blue-600 w-[90%] rounded-full'>{loading ? <Loader/>:"Login with otp"}</button>
     </div>
 
     {/* Forget password */}
@@ -493,6 +512,7 @@ function Loginwithpassword ({onClose,isOpen}:any){
   const[msg,setMsg] = useState('')
   const [type,setType] = useState('password');
   const [password,setPassword] = useState('')
+  const[loading,setLoading]  = useState(false)
   return <div className='fixed inset-0 flex items-center  justify-center backdrop-blur-xs bg-opacity-60 z-50 transition-opacity duration-300 ease-in-out'>
     <div className='bg-white flex flex-col  gap-6 p-8 rounded-2xl shadow-2xl border border-gray-300 relative w-full max-w-md'>
     <div className='flex justify-between items-center '>
@@ -522,6 +542,7 @@ function Loginwithpassword ({onClose,isOpen}:any){
         alert("Please enter password")
         return ;
       }
+      setLoading(true)
       try{
         const res = await axios({
           url:`https://ashtabackend.onrender.com/user/checkpassword?password=${password}&number=${localStorage.getItem('number')}`,
@@ -534,15 +555,21 @@ function Loginwithpassword ({onClose,isOpen}:any){
              localStorage.setItem('userid',res.data.userid)
              window.location.href = '/'
         }
-        else setMsg(res.data.msg)
+        else {
+          setMsg(res.data.msg)
+          localStorage.removeItem('role')
+        }
 
       }
       catch(err){
         console.log(err)
         alert(err)
       }
+      finally{
+        setLoading(false)
+      }
     }}
-    className='px-5 cursor-pointer hover:bg-blue-600 py-2 rounded-full text-white bg-blue-500'>Login</button>
+    className='px-5 cursor-pointer hover:bg-blue-600 py-2 rounded-full text-white bg-blue-500'>{loading ? <Loader/>:"Login"}</button>
    </div>
 
     {msg && <p className='text-red-400 ml-3'>{msg}</p>}
@@ -566,6 +593,7 @@ function Loginwithotp({onClose,isOpen,token,userid}:any){
         localStorage.setItem('userid',userid)
          window.location.href = '/'
     }
+    else localStorage.removeItem('role')
    
   }
   if(!isOpen) return null;
