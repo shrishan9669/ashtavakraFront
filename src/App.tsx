@@ -1,13 +1,12 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 import Home from "./pages/home"
 import Header from "./components/header"
 import Course1 from "./pages/course1"
-import { useState } from "react"
+import { JSX, useState } from "react"
 import { MobileNumberModal, SignupModal} from "./components/loginmodal"
 import Profilepage from "./pages/profile-page"
 import Admin from "./pages/admin"
 import View from "./pages/Viewcourse"
-import Loader from "./components/loader"
 import PaymentConfirm from "./pages/paymentConfirm"
 
 
@@ -19,6 +18,10 @@ function App() {
 
    const [sidebar,setSidebar] = useState(false)
   
+   const PrivateRoute = ({children}:{children:JSX.Element}) => {
+      const isAuthenticated = !!localStorage.getItem('token');
+      return isAuthenticated ? children : <Navigate to={'/'} />
+    }
  return (
   <BrowserRouter>
   
@@ -29,12 +32,12 @@ function App() {
    <Route path="/" element={<Home sidebar={sidebar}/>}/>
 
    
-   <Route path="/courses/:id" element={<Course1/>} />
-   <Route path="/profile-page" element={<Profilepage />} />
-   <Route path="/admin" element={<Admin/>}/> 
-   <Route path="/view" element={<View/>}/> 
-   <Route path="/loader" element={<Loader/>}/>
-   <Route path="/paymentdetails" element={<PaymentConfirm/>}/>   
+   <Route path="/courses/:id" element={<PrivateRoute><Course1/></PrivateRoute>} />
+   <Route path="/profile-page" element={<PrivateRoute><Profilepage /></PrivateRoute>} />
+   <Route path="/admin" element={<PrivateRoute><Admin/></PrivateRoute>}/> 
+   <Route path="/view" element={<PrivateRoute><View/></PrivateRoute>}/> 
+   
+   <Route path="/paymentdetails" element={<PrivateRoute><PaymentConfirm/></PrivateRoute>}/>   
 </Routes>
 <SignupModal isOpen={isModalOpen} onClose={()=>setIsModalOpen(false)}/>
  <MobileNumberModal isOpen={isLoginOpen} onClose={()=> setIsLoginOpen(false)}/>
