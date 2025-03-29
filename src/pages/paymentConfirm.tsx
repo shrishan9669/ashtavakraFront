@@ -1,135 +1,238 @@
 import axios from "axios";
-import { useState } from "react"
+import { useState, ChangeEvent } from "react";
 import Loader from "../components/loader";
 
-export default function PaymentConfirm(){
+export default function PaymentConfirm() {
+    // State with TypeScript types
+    const [name, setName] = useState<string>('');
+    const [number, setNumber] = useState<string>('');
+    const [transactionid, setId] = useState<string>('');
+    const [msg, setMsg] = useState<string>('');
+    const [image, setImage] = useState<string | null>(null);
+    const [file, setFile] = useState<File | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
-    
-
-   
-
-    const[name,setName] = useState('');
-    const[number,setNumber] = useState('');
-    const[transactionid,setId] = useState('');
-    const [msg,setMsg] = useState('');
-    const [image,setImage] = useState(String || null)
-    const[file,setFile] = useState(null)
-    const [loading,setLoading] = useState(false)
-
-    function handleFileChange(e:any){
-        const file = e.target.files[0];
-        if(file){
-            console.log(URL.createObjectURL(file));
+    // Handle file input change
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
             setImage(URL.createObjectURL(file));
-            setFile(file)
+            setFile(file);
         }
-    }
+    };
 
-   async function Makepurchase(){
-    try{
-       const make = await axios({
-        url:'https://ashtabackend.onrender.com/user/addpurchase',
-        data:{
-            name:name,number:number,transactionid:transactionid
-        },
-        method:'POST'
-       })
-       if(make.data && make.data.msg){
-            setMsg(make.data.msg);
-       }
-    }
-    catch(err){
-        console.log(err)
-    }
-   }
+    // Make purchase API call
+    const makePurchase = async () => {
+        try {
+            const response = await axios.post(
+                'https://ashtabackend.onrender.com/user/addpurchase',
+                { name, number, transactionid }
+            );
+            if (response.data?.msg) {
+                setMsg(response.data.msg);
+            }
+        } catch (error) {
+            console.error("Purchase error:", error);
+            setMsg("Failed to process payment. Please try again.");
+        }
+    };
 
-   async function Handlefileupload(){
-    const data = new FormData();
-    data.append('name',name);
-    data.append('number',number);
-    data.append('transactionid',transactionid);
-    data.append('screenshot',file || "")
-     console.log("The image is here-> " + file);
-    try{
-       await axios({
-        url:"https://ashtabackend.onrender.com/user/sendMail",
-        headers:{
-            "Content-Type": "multipart/form-data"
-        },
-        data:data,
-        method:'POST'
-      })
-      
-    }
-    catch(err){
-        console.log(err)
-    }
-   }
+    // Handle file upload
+    const handleFileUpload = async () => {
+        if (!file) return;
+        
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('number', number);
+        formData.append('transactionid', transactionid);
+        formData.append('screenshot', file);
 
-    return  <div className="flex flex-col justify-center items-center p-4">
-    {/* Form */}
-    <div className="bg-gray-100 p-6 rounded-lg shadow-md">
-      {/* Name */}
-      <div className="mb-4">
-        <label htmlFor="name" className="block font-medium">Name:</label>
-        <input onChange={(e)=> setName(e.target.value)} type="text" className="border p-2 w-full rounded" />
-      </div>
+        try {
+            await axios.post(
+                "https://ashtabackend.onrender.com/user/sendMail",
+                formData,
+                { headers: { "Content-Type": "multipart/form-data" } }
+            );
+        } catch (error) {
+            console.error("File upload error:", error);
+            setMsg("Payment confirmed but screenshot upload failed. Please contact support.");
+        }
+    };
 
-      {/* Phone Number */}
-      <div className="mb-4">
-        <label htmlFor="number" className="block font-medium">Phone Number:</label>
-        <input onChange={(e)=> setNumber(e.target.value)} type="text" className="border p-2 w-full rounded" />
-      </div>
+    // Form submission handler
+    const handleSubmit = async () => {
+        if (!name || !number || !transactionid || !file) {
+            setMsg("All fields are required!");
+            return;
+        }
 
-      {/* Transaction ID */}
-      <div className="mb-4">
-        <label htmlFor="transactionid" className="block font-medium">Transaction ID:</label>
-        <input onChange={(e)=> setId(e.target.value)} type="text" className="border p-2 w-full rounded" />
-      </div>
+        setLoading(true);
+        setMsg("");
 
-      {/* Screenshot Upload */}
-      <div className="mb-4">
-        <label htmlFor="screenshot" className="block font-medium">Upload Screenshot:</label>
-        <input type="file" accept="image/*" onChange={handleFileChange} className="border p-2 w-full rounded" />
-      </div>
+        try {
+            await Promise.all([makePurchase(), handleFileUpload()]);
+        } catch (error) {
+            console.error("Submission error:", error);
+            setMsg("An unexpected error occurred. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
-      {/* Image Preview */}
-      {image && (
-        <div className="mb-4">
-          <p className="font-medium">Preview:</p>
-          <img src={image} alt="Screenshot Preview" className="w-40 h-40 object-contain border p-1 rounded" />
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4 sm:p-6">
+            <div className="w-full max-w-md sm:max-w-lg md:max-w-2xl bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300">
+                {/* Form Header */}
+                <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-5 text-white">
+                    <h2 className="text-xl sm:text-2xl font-bold text-center">Payment Confirmation</h2>
+                    <p className="text-sm sm:text-base text-center mt-1 opacity-90">
+                        Please fill in your payment details
+                    </p>
+                </div>
+
+                {/* Form Body */}
+                <div className="p-6 sm:p-8">
+                    {/* Name Field */}
+                    <div className="mb-5">
+                        <label htmlFor="name" className="block text-sm sm:text-base font-medium text-gray-700 mb-2">
+                            Full Name
+                        </label>
+                        <input
+                            id="name"
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            placeholder="John Doe"
+                            required
+                        />
+                    </div>
+
+                    {/* Phone Number Field */}
+                    <div className="mb-5">
+                        <label htmlFor="number" className="block text-sm sm:text-base font-medium text-gray-700 mb-2">
+                            Phone Number
+                        </label>
+                        <input
+                            id="number"
+                            type="tel"
+                            value={number}
+                            onChange={(e) => setNumber(e.target.value)}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            placeholder="+1234567890"
+                            required
+                        />
+                    </div>
+
+                    {/* Transaction ID Field */}
+                    <div className="mb-5">
+                        <label htmlFor="transactionid" className="block text-sm sm:text-base font-medium text-gray-700 mb-2">
+                            Transaction ID
+                        </label>
+                        <input
+                            id="transactionid"
+                            type="text"
+                            value={transactionid}
+                            onChange={(e) => setId(e.target.value)}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            placeholder="TXN12345678"
+                            required
+                        />
+                    </div>
+
+                    {/* File Upload */}
+                    <div className="mb-5">
+                        <label className="block text-sm sm:text-base font-medium text-gray-700 mb-2">
+                            Payment Screenshot
+                        </label>
+                        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                            <label className="flex-1 cursor-pointer">
+                                <div className="px-4 py-3 bg-white text-blue-600 rounded-lg border-2 border-dashed border-blue-400 hover:bg-blue-50 transition-all flex items-center justify-center">
+                                    <span className="text-sm sm:text-base truncate max-w-xs">
+                                        {file ? file.name : "Click to upload screenshot"}
+                                    </span>
+                                </div>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                    className="hidden"
+                                    required
+                                />
+                            </label>
+                            {file && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setFile(null);
+                                        setImage(null);
+                                    }}
+                                    className="px-3 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition-colors text-sm"
+                                >
+                                    Remove
+                                </button>
+                            )}
+                        </div>
+                        <p className="mt-1 text-xs text-gray-500">
+                            Upload a clear screenshot of your payment confirmation
+                        </p>
+                    </div>
+
+                    {/* Image Preview */}
+                    {image && (
+                        <div className="mb-6 flex flex-col items-center border border-gray-200 rounded-lg p-3 bg-gray-50">
+                            <p className="text-sm font-medium text-gray-700 mb-2">Screenshot Preview</p>
+                            <img
+                                src={image}
+                                alt="Payment screenshot preview"
+                                className="max-w-full h-auto max-h-64 object-contain rounded-md"
+                            />
+                        </div>
+                    )}
+
+                    {/* Submit Button */}
+                    <div className="mt-6">
+                        <button
+                            onClick={handleSubmit}
+                            disabled={loading}
+                            className={`w-full py-3 px-6 rounded-lg shadow-md text-white font-medium text-sm sm:text-base transition-all duration-300 flex items-center justify-center ${
+                                loading
+                                    ? 'bg-blue-400 cursor-not-allowed'
+                                    : 'bg-blue-600 hover:bg-blue-700 hover:shadow-lg transform hover:-translate-y-0.5'
+                            }`}
+                        >
+                            {loading ? (
+                                <>
+                                    <Loader/>
+                                    Processing...
+                                </>
+                            ) : (
+                                "Confirm Payment"
+                            )}
+                        </button>
+                    </div>
+
+                    {/* Status Message */}
+                    {msg && (
+                        <div
+                            className={`mt-4 p-3 rounded-lg text-center text-sm sm:text-base ${
+                                msg.toLowerCase().includes('success')
+                                    ? 'bg-green-100 text-green-800'
+                                    : 'bg-red-100 text-red-800'
+                            }`}
+                        >
+                            {msg}
+                        </div>
+                    )}
+                </div>
+
+                {/* Footer Note */}
+                {/* <div className="bg-gray-50 px-6 py-4 border-t border-gray-200">
+                    <p className="text-xs sm:text-sm text-gray-500 text-center">
+                        Having trouble? Contact support at support@example.com
+                    </p>
+                </div> */}
+            </div>
         </div>
-      )}
-
-      {/* Submit Button */}
-      <div className="flex justify-center">
-      <button
-      onClick={()=>{
-        if(!name || !number || !transactionid || !image){
-            alert("All fields are required!!");
-            return ;
-        }
-        setLoading(true)
-        try{
-            Makepurchase();
-            Handlefileupload();
-        }
-        catch(err){
-              console.log(err)
-        }
-        finally{
-            setLoading(false)
-        }
-       
-      }}
-      className="bg-blue-500   text-white w-full  py-2 rounded-full cursor-pointer hover:bg-blue-600">
-        {loading ? <Loader/>:"Submit"}
-      </button>
-      </div>
-     
-
-      {/* msg */}
-      <span className="flex mt-4 justify-center  max-w-[400px] text-center text-pink-600 font-medium">{msg}</span>
-    </div>
-  </div>
+    );
 }
