@@ -16,15 +16,17 @@ import PaymentConfirm from "./pages/paymentConfirm"
 function App() {
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+   const [sidebar,setSidebar] = useState(false)
   
  return (
   <BrowserRouter>
   
   <div style={{fontFamily:'Quicksand, sans-serif'}}>
-  <Header onSignupclick={()=> setIsModalOpen(true)} onLoginclick={()=> setIsLoginOpen(true)}/>
+  <Header setSidebar={setSidebar} onSignupclick={()=> setIsModalOpen(true)} onLoginclick={()=> setIsLoginOpen(true)}/>
 
 <Routes>
-   <Route path="/" element={<Home/>}/>
+   <Route path="/" element={<Home sidebar={sidebar}/>}/>
 
    
    <Route path="/courses/:id" element={<Course1/>} />
