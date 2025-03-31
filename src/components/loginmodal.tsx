@@ -399,7 +399,7 @@ export const MobileNumberModal = ({onClose,isOpen}:any)=>{
               setLoading(true)
                 try{
                   const user = await axios({
-                    url:"https://ashtabackendlatest.onrender.com/user/checknumber",
+                    url:"http://localhost:3000/user/checknumber",
                     data:{
                       number
                     },
@@ -459,7 +459,7 @@ function Aftermobile({onClose,isOpen}:any){
       className='bg-blue-500 p-3 cursor-pointer text-white text-lg hover:bg-blue-600 w-[90%] rounded-full'>Login with password</button>
     </div>
 
-    {/* login with otp */}
+    {/* login with otp
     <div className='flex justify-center'>
       <button
       // Sending Otp
@@ -468,7 +468,7 @@ function Aftermobile({onClose,isOpen}:any){
         setLoading(true)
          try{
             const res = await axios({
-              url:'https://ashtabackendlatest.onrender.com/user/send-otp',
+              url:'http://localhost:3000/user/send-otp',
               data:{
                 phonenumber:localStorage.getItem('number')
               },
@@ -490,7 +490,7 @@ function Aftermobile({onClose,isOpen}:any){
          }
       }}
       className='bg-blue-500 p-3 cursor-pointer  text-white text-lg hover:bg-blue-600 w-[90%] rounded-full'>{loading ? <Loader/>:"Login with otp"}</button>
-    </div>
+    </div> */}
 
     {/* Forget password */}
     <div className='flex justify-center'>
