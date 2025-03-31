@@ -168,7 +168,7 @@ export const SignupModal = ({isOpen,onClose}:any) => {
               setLoading(true)
               try{
                   const res = await axios({
-                      url:"https://ashtabackend.onrender.com/user/createuser",
+                      url:"https://ashtabackendlatest.onrender.com/user/createuser",
                       method:"POST",
                       data:{
                         email,password,name,number:phone,role:"student"
@@ -305,7 +305,7 @@ export const SignupModal = ({isOpen,onClose}:any) => {
                 setLoading(true)
               try{
                   const res = await axios({
-                      url:"https://ashtabackend.onrender.com/user/createuser",
+                      url:"https://ashtabackendlatest.onrender.com/user/createuser",
                       method:"POST",
                       data:{
                         email,password,name,number:phone,role:"teacher"
@@ -399,7 +399,7 @@ export const MobileNumberModal = ({onClose,isOpen}:any)=>{
               setLoading(true)
                 try{
                   const user = await axios({
-                    url:"https://ashtabackend.onrender.com/user/checknumber",
+                    url:"https://ashtabackendlatest.onrender.com/user/checknumber",
                     data:{
                       number
                     },
@@ -468,7 +468,7 @@ function Aftermobile({onClose,isOpen}:any){
         setLoading(true)
          try{
             const res = await axios({
-              url:'https://ashtabackend.onrender.com/user/send-otp',
+              url:'https://ashtabackendlatest.onrender.com/user/send-otp',
               data:{
                 phonenumber:localStorage.getItem('number')
               },
@@ -545,7 +545,7 @@ function Loginwithpassword ({onClose,isOpen}:any){
       setLoading(true)
       try{
         const res = await axios({
-          url:`https://ashtabackend.onrender.com/user/checkpassword?password=${password}&number=${localStorage.getItem('number')}`,
+          url:`https://ashtabackendlatest.onrender.com/user/checkpassword?password=${password}&number=${localStorage.getItem('number')}`,
          
           method:'GET'
         })
