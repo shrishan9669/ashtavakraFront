@@ -12,7 +12,7 @@ export default function Profilepage() {
     async function Getdemodetails() {
         try {
             const access = await axios({
-                url: `https://ashtabackend.onrender.com/user/checkDemoaccess?id=${localStorage.getItem('userid')}`,
+                url: `https://ashtabackendlatest.onrender.com/user/checkDemoaccess?id=${localStorage.getItem('userid')}`,
                 method: 'GET'
             });
             if (access.data && access.data.success) {
@@ -33,7 +33,7 @@ export default function Profilepage() {
     async function SetAccessfalseAfterExpired() {
         try {
             await axios({
-                url: `https://ashtabackend.onrender.com/user/setAccessfalse?id=${localStorage.getItem('userid')}`,
+                url: `https://ashtabackendlatest.onrender.com/user/setAccessfalse?id=${localStorage.getItem('userid')}`,
                 method: 'PUT'
             });
         } catch (err) {
@@ -71,7 +71,7 @@ export default function Profilepage() {
         setLoading(true)
         try {
            const Demo =  await axios({
-                url: "https://ashtabackend.onrender.com/user/start-demo",
+                url: "https://ashtabackendlatest.onrender.com/user/start-demo",
                 data: {
                     userid: localStorage.getItem('userid')
                 },
@@ -91,7 +91,7 @@ export default function Profilepage() {
     async function IsPaymentVerified() {
         try {
             const Permit = await axios({
-                url: `https://ashtabackend.onrender.com/user/IsPayVerified?number=${localStorage.getItem('number')}`
+                url: `https://ashtabackendlatest.onrender.com/user/IsPayVerified?number=${localStorage.getItem('number')}`
             });
             if (Permit.data && Permit.data.success) {
                 setPayVerified(true);
@@ -109,7 +109,8 @@ export default function Profilepage() {
     return (
         <div className="p-4 sm:p-6 md:p-10 lg:p-14 w-full max-w-7xl mx-auto">
             {/* Demo Access Section */}
-            {demoAccess !== '' && (
+            
+            {(demoAccess !== '' ) && (
                 <div className="mb-6">
                     {demoAccess === true ? (
                         <p className="text-white mb-3 rounded-xl md:rounded-2xl p-3 font-bold text-center text-lg sm:text-xl bg-black">
@@ -237,11 +238,12 @@ function Card_course() {
 export function General() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const[promocode,setPromocode] = useState('')
 
     async function Userdetails() {
         try {
             const res = await axios({
-                url: `https://ashtabackend.onrender.com/user/details?number=${localStorage.getItem('number')}`,
+                url: `https://ashtabackendlatest.onrender.com/user/details?number=${localStorage.getItem('number')}`,
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 },
@@ -250,6 +252,7 @@ export function General() {
             if (res.data) {
                 setName(res.data.user.name);
                 setEmail(res.data.user.email);
+                setPromocode(res.data.user.promocode)
             }
         } catch (err) {
             console.log(err);
@@ -272,6 +275,17 @@ export function General() {
                 <input 
                     type="text" 
                     value={name} 
+                    disabled 
+                    className="p-2 sm:p-3 bg-slate-100 rounded-lg sm:rounded-full w-full" 
+                />
+            </div>
+            <div className="flex flex-col gap-2 sm:gap-3">
+                <label className="font-bold text-sm sm:text-base">
+                    Promo code <span className="text-red-500">*</span>
+                </label>
+                <input 
+                    type="text" 
+                    value={promocode} 
                     disabled 
                     className="p-2 sm:p-3 bg-slate-100 rounded-lg sm:rounded-full w-full" 
                 />
@@ -314,7 +328,7 @@ export function Security() {
         setLoading(true);
         try {
             const find = await axios({
-                url: `https://ashtabackend.onrender.com/user/details?number=${localStorage.getItem('number')}`,
+                url: `https://ashtabackendlatest.onrender.com/user/details?number=${localStorage.getItem('number')}`,
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -333,7 +347,7 @@ export function Security() {
                 } else {
                     try {
                         const changepassword = await axios({
-                            url: 'https://ashtabackend.onrender.com/user/changepassword',
+                            url: 'https://ashtabackendlatest.onrender.com/user/changepassword',
                             data: { number: localStorage.getItem('number'), newpass: confirm },
                             method: 'PUT',
                             headers: {
