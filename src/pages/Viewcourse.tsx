@@ -11,7 +11,7 @@ export default function View() {
         try {
             setLoading(true);
             const res = await axios({
-                url: 'https://ashtabackend.onrender.com/user/getlatestlink',
+                url: 'https://ashtabackendlatest.onrender.com/user/getlatestlink',
                 method: 'GET'
             });
 
