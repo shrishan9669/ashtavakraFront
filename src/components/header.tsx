@@ -17,7 +17,7 @@ export default function Header({ onSignupclick, onLoginclick,setSidebar }: any) 
        <FaArrowRight/>  
       </div> 
       <div className="flex items-center space-x-3">
-        <img src="./logo.jpg" alt="Vive Logo" className="h-14 md:h-20 rounded-full w-14 md:w-20" />
+        <img src="/logo.jpg" alt="Vive Logo" className="h-14 md:h-20 rounded-full w-14 md:w-20" />
         <span className="text-lg md:text-xl flex flex-col font-bold text-gray-800">अष्टावक्र <span>अकैडमी</span></span>
       </div>
       
