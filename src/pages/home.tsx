@@ -1,9 +1,10 @@
-import { useState } from "react";
+import {  useEffect, useState } from "react";
 import { FaDownload, FaHome } from "react-icons/fa";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { SiGooglescholar } from "react-icons/si";
-import { General, Purchases, Security } from "./profile-page";
+import { Card_course, General, Security } from "./profile-page";
+import axios from "axios";
 
 export default function Home({sidebar}:any) {
   const [element, setElement] = useState('course');
@@ -87,6 +88,44 @@ export default function Home({sidebar}:any) {
     </div>
   );
 }
+export function Purchases() {
+   const [payVerified,setPayVerified] = useState(false)
+   
+   async function IsPaymentVerified() {
+    try {
+        const Permit = await axios({
+            url: `https://ashtabackendlatest.onrender.com/user/IsPayVerified?number=${localStorage.getItem('number')}`
+        });
+        if (Permit.data && Permit.data.success) {
+            console.log("Permit.data-> " , Permit.data)
+            setPayVerified(true);
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+useEffect(() => {
+    IsPaymentVerified();
+}, []);
+
+    return (
+        <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-5 sm:gap-7">
+            <h1 className="font-bold text-xl sm:text-2xl">My Purchases</h1>
+
+            { payVerified ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <Card_course />
+                    {/* Add more cards here if needed */}
+                </div>
+            ) : (
+                <div className="text-blue-500 bg-blue-100 font-medium p-4 sm:p-6 rounded-full sm:mr-10 md:mr-20 text-center sm:text-left">
+                    No courses purchased yet
+                </div>
+            )}
+        </div>
+    );
+}
 
 function CombineGeneralandSecurity(){
   const [selected,setSelected] = useState('general')
@@ -116,9 +155,9 @@ function Left_home(){
   return (
     <div className="flex flex-col items-center w-full">  
       {/* top image */}
-      <div className="w-full md:w-[80%] px-4 md:px-0">
+      <div className="w-full md:w-[90%] px-4 md:px-0">
         <img 
-          src="./liveprep.webp" 
+          src="https://plus.unsplash.com/premium_photo-1683887033239-08a75665a069?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHNjaWVuY2UlMjBhbmQlMjBtYXRoc3xlbnwwfHwwfHx8MA%3D%3D" 
           className="h-auto md:h-[700px] w-full rounded-lg md:rounded-2xl" 
           alt="Live-Prep banner" 
         />
@@ -134,7 +173,7 @@ function Left_home(){
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl mb-4">
-            Why <span className="text-indigo-600">AVA Classes</span>?
+            Why <span className="text-indigo-600">AVS Classes</span>?
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             The most effective way to accelerate your tech career with industry-relevant skills
@@ -154,7 +193,7 @@ function Left_home(){
               <h3 className="text-xl font-semibold text-gray-900">Learn from the best</h3>
             </div>
             <p className="text-gray-600 pl-16">
-              Aman clears the core concepts very easily with real life Examples.
+              We clears the core concepts very easily with real life Examples.
             </p>
           </div>
 
@@ -229,7 +268,7 @@ function Left_home(){
               <h3 className="text-xl font-semibold text-gray-900">Assignments</h3>
             </div>
             <p className="text-gray-600 pl-16">
-              Aman has personally created assignments after every week of study, so it's extremely hands on.
+              We have personally created assignments after every week of study, so it's extremely hands on.
             </p>
           </div>
         </div>
@@ -245,7 +284,7 @@ function Left_home(){
   {/* Header */}
   <div className="text-center">
     <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-      About AVA Classes
+      About <span className="">AVS</span> Classes
     </h1>
     <div className="mt-2 h-1 w-20 mx-auto bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"></div>
   </div>
@@ -263,7 +302,7 @@ function Left_home(){
             <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
           </svg>
         </div>
-        <h2 className="text-xl md:text-2xl font-semibold text-gray-800">Welcome to Ashtavakra Academy</h2>
+        <h2 className="text-xl md:text-2xl font-semibold text-gray-800">Welcome to विज्ञान संस्था</h2>
       </div>
       
       <p className="text-gray-700 leading-relaxed">
