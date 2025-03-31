@@ -163,7 +163,7 @@ export default function Admin() {
 
                         {msg && (
                             <div className={`text-center p-2 rounded-lg ${
-                                msg.includes('success') 
+                                msg.includes('updated') 
                                     ? 'bg-green-100 text-green-700' 
                                     : 'bg-red-100 text-red-700'
                             }`}>
