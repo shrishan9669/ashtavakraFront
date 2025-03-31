@@ -90,7 +90,7 @@ export default function PaymentModal({ isOpen, onClose, installment }: any) {
             <div className=" bg-gray-50 rounded-xl border border-gray-200 mb-4">
               <img 
                 className="w-full rounded-xl h-48 object-contain" 
-                src="../../public/chunnuqr.jpg" 
+                src="./chunnuqr.jpg" 
                 alt="Payment QR Code"
               />
             </div>
