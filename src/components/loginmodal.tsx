@@ -433,14 +433,14 @@ export const MobileNumberModal = ({onClose,isOpen}:any)=>{
 function Aftermobile({onClose,isOpen}:any){
   if(!isOpen) return null;
   const [withpassword,setWithpassword] = useState(false)
-  const [withOtp,setWithOtp] = useState(false)
-  const[loading,setLoading] = useState(false)
-  // credentials to be send through component
-  const [token,setToken] = useState('')
-   const [userid,setuserId] = useState('');
+  // const [withOtp,setWithOtp] = useState(false)
+  // const[loading,setLoading] = useState(false)
+  // // credentials to be send through component
+  // const [token,setToken] = useState('')
+  //  const [userid,setuserId] = useState('');
 
   return (<div>
-            {withpassword ? <Loginwithpassword onClose={onClose} isOpen={isOpen}/> : (withOtp ? <Loginwithotp userid={userid} token={token} onClose={onClose} isOpen={isOpen}/>:<div className='fixed inset-0 flex items-center  justify-center backdrop-blur-xs bg-opacity-60 z-50 transition-opacity duration-300 ease-in-out'>
+            {withpassword ? <Loginwithpassword onClose={onClose} isOpen={isOpen}/> :<div className='fixed inset-0 flex items-center  justify-center backdrop-blur-xs bg-opacity-60 z-50 transition-opacity duration-300 ease-in-out'>
     <div className='bg-white flex flex-col  gap-6 p-8 rounded-2xl shadow-2xl border border-gray-300 relative w-full max-w-md'>
     <div className='flex justify-between items-center '>
             <h1 className='font-bold text-xl'>Login to your account</h1>
@@ -500,7 +500,7 @@ function Aftermobile({onClose,isOpen}:any){
 
 
 
-  </div>)}
+  </div>}
           </div>
         )
   
@@ -584,48 +584,48 @@ function Loginwithpassword ({onClose,isOpen}:any){
 
   </div>
 }
-function Loginwithotp({onClose,isOpen,token,userid}:any){
-  const [enterotp,setOtp] = useState('')
-  function checkotp(){
-    if(localStorage.getItem('code') && localStorage.getItem('code')===enterotp){
-        localStorage.removeItem('code');
-        localStorage.setItem('token',token)
-        localStorage.setItem('userid',userid)
-         window.location.href = '/'
-    }
-    else localStorage.removeItem('role')
+// function Loginwithotp({onClose,isOpen,token,userid}:any){
+//   const [enterotp,setOtp] = useState('')
+//   function checkotp(){
+//     if(localStorage.getItem('code') && localStorage.getItem('code')===enterotp){
+//         localStorage.removeItem('code');
+//         localStorage.setItem('token',token)
+//         localStorage.setItem('userid',userid)
+//          window.location.href = '/'
+//     }
+//     else localStorage.removeItem('role')
    
-  }
-  if(!isOpen) return null;
-  return <div className='fixed inset-0 flex items-center  justify-center backdrop-blur-xs bg-opacity-60 z-50 transition-opacity duration-300 ease-in-out'>
-        <div className='bg-white flex flex-col  gap-6 p-8 rounded-2xl shadow-2xl border border-gray-300 relative w-full max-w-md'>
+//   }
+//   if(!isOpen) return null;
+//   return <div className='fixed inset-0 flex items-center  justify-center backdrop-blur-xs bg-opacity-60 z-50 transition-opacity duration-300 ease-in-out'>
+//         <div className='bg-white flex flex-col  gap-6 p-8 rounded-2xl shadow-2xl border border-gray-300 relative w-full max-w-md'>
             
-        <div className='flex justify-between items-center '>
-            <h1 className='font-bold text-xl'>Login to your account</h1>
-            <button
-            onClick={onClose}
+//         <div className='flex justify-between items-center '>
+//             <h1 className='font-bold text-xl'>Login to your account</h1>
+//             <button
+//             onClick={onClose}
                
-                className="text-3xl cursor-pointer font-bold text-gray-600 hover:text-black"
-            >
-                &times;
-            </button>
-    </div>
-    {/* label */}
-            <div className='flex flex-col gap-3'>
-              <label htmlFor="otp">Enter OTP</label>
-              <input onChange={(e)=> setOtp(e.target.value)} type="text" placeholder='Enter OTP'  className='w-full rounded-full bg-slate-200 outline-0 border border-slate-500 p-3'/>
-            </div>
+//                 className="text-3xl cursor-pointer font-bold text-gray-600 hover:text-black"
+//             >
+//                 &times;
+//             </button>
+//     </div>
+//     {/* label */}
+//             <div className='flex flex-col gap-3'>
+//               <label htmlFor="otp">Enter OTP</label>
+//               <input onChange={(e)=> setOtp(e.target.value)} type="text" placeholder='Enter OTP'  className='w-full rounded-full bg-slate-200 outline-0 border border-slate-500 p-3'/>
+//             </div>
 
-            {/* Green bar */}
-            <div className='p-4 w-full rounded-3xl text-green-500 bg-green-200'>
-            We’ve sent an OTP to your phone number
-            </div>
+//             {/* Green bar */}
+//             <div className='p-4 w-full rounded-3xl text-green-500 bg-green-200'>
+//             We’ve sent an OTP to your phone number
+//             </div>
 
-            <div className='flex justify-center'>
-              <button
-              onClick={checkotp}
-              className='w-[70%] py-2 text-white bg-blue-500 rounded-full hover:bg-blue-600 cursor-pointer'>Submit</button>
-            </div>
-        </div>
-  </div>
-}
+//             <div className='flex justify-center'>
+//               <button
+//               onClick={checkotp}
+//               className='w-[70%] py-2 text-white bg-blue-500 rounded-full hover:bg-blue-600 cursor-pointer'>Submit</button>
+//             </div>
+//         </div>
+//   </div>
+// }
