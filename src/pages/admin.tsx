@@ -15,7 +15,7 @@ export default function Admin() {
         setLoading1(true);
         try {
             const res = await axios({
-                url: 'https://ashtabackend.onrender.com/user/getpending',
+                url: 'https://ashtabackendlatest.onrender.com/user/getpending',
                 method: 'GET'
             });
 
@@ -38,7 +38,7 @@ export default function Admin() {
         setLoading(true);
         try {
             const res = await axios({
-                url: 'https://ashtabackend.onrender.com/user/linkpasting',
+                url: 'https://ashtabackendlatest.onrender.com/user/linkpasting',
                 data: { link, course },
                 method: 'POST'
             });
@@ -61,7 +61,7 @@ export default function Admin() {
         setLoadingObj(prev => ({ ...prev, [id]: true }));
         try {
             await axios({
-                url: `https://ashtabackend.onrender.com/user/varifytrue?id=${id}`,
+                url: `https://ashtabackendlatest.onrender.com/user/varifytrue?id=${id}`,
                 method: 'PUT'
             });
             // Refresh the pending list after verification
@@ -79,7 +79,7 @@ export default function Admin() {
         setLoading2(true)
         try{
          const Delete =  await axios({
-            url:'https://ashtabackend.onrender.com/user/removelastLink',
+            url:'https://ashtabackendlatest.onrender.com/user/removelastLink',
             method:'DELETE'
           })
             
@@ -199,6 +199,7 @@ export default function Admin() {
                                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
                                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transaction ID</th>
+                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Installments</th>
                                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                                 </tr>
                             </thead>
@@ -208,6 +209,7 @@ export default function Admin() {
                                         <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{e.name}</td>
                                         <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{e.number}</td>
                                         <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{e.purchaseid}</td>
+                                        <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{e.Installment}</td>
                                         <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                                             <button
                                                 onClick={() => handleVerify(e.id)}
