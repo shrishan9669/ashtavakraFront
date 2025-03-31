@@ -206,7 +206,7 @@ export function Purchases({ demoAccess, payVerified }: any) {
 
 
 
-function Card_course() {
+export function Card_course() {
     return (
         <div className="w-full max-w-sm sm:w-[350px] h-auto rounded-xl md:rounded-2xl border border-slate-300 shadow-md overflow-hidden">
             <div className="h-48 sm:h-40 md:h-48 overflow-hidden">
