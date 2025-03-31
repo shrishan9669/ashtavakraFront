@@ -11,7 +11,17 @@ export default function PaymentConfirm() {
     const [image, setImage] = useState<string | null>(null);
     const [file, setFile] = useState<File | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [installment,setInstallment] = useState('0');
 
+    const phoneNumberRegex = /^[7-9]{1}[0-9]{9}$/;
+  function handlenumberchange(e:any){
+          setNumber(e.target.value)
+             console.log(e.target.value)
+          if(!phoneNumberRegex.test(e.target.value)){
+            setMsg('Invalid mobile number format!!')
+          }
+          else setMsg('')
+  }
     // Handle file input change
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -25,8 +35,8 @@ export default function PaymentConfirm() {
     const makePurchase = async () => {
         try {
             const response = await axios.post(
-                'https://ashtabackend.onrender.com/user/addpurchase',
-                { name, number, transactionid }
+                'https://ashtabackendlatest.onrender.com/user/addpurchase',
+                { name, number, transactionid ,installment }
             );
             if (response.data?.msg) {
                 setMsg(response.data.msg);
@@ -37,19 +47,26 @@ export default function PaymentConfirm() {
         }
     };
 
+    
+
     // Handle file upload
     const handleFileUpload = async () => {
         if (!file) return;
+
         
         const formData = new FormData();
         formData.append('name', name);
         formData.append('number', number);
         formData.append('transactionid', transactionid);
         formData.append('screenshot', file);
-
+        formData.append('installment',installment)
+        if(localStorage.getItem('promo')){
+            formData.append('promo','applied');
+        }
+        else formData.append('promo','unapplied');
         try {
             await axios.post(
-                "https://ashtabackend.onrender.com/user/sendMail",
+                "https://ashtabackendlatest.onrender.com/user/sendMail",
                 formData,
                 { headers: { "Content-Type": "multipart/form-data" } }
             );
@@ -64,6 +81,14 @@ export default function PaymentConfirm() {
         if (!name || !number || !transactionid || !file) {
             setMsg("All fields are required!");
             return;
+        }
+        if(!phoneNumberRegex.test(number)){
+            alert('Invalid mobile number format!!')
+            return;
+        }
+        if(installment != '1' && installment != '2' && installment != '0'){
+            alert("Installment field can be 1 , 2 or 0.");
+            return ;
         }
 
         setLoading(true);
@@ -117,11 +142,13 @@ export default function PaymentConfirm() {
                             id="number"
                             type="tel"
                             value={number}
-                            onChange={(e) => setNumber(e.target.value)}
+                            onChange={handlenumberchange}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                             placeholder="+1234567890"
                             required
                         />
+                       
+                        
                     </div>
 
                     {/* Transaction ID Field */}
@@ -138,6 +165,25 @@ export default function PaymentConfirm() {
                             placeholder="TXN12345678"
                             required
                         />
+                    </div>
+                    {/* Installments */}
+                    <div className="mb-5">
+                        <label htmlFor="installment" className="block text-sm sm:text-base font-medium text-gray-700 mb-2">
+                            Installments
+                        </label>
+                        <input
+                            id="installment"
+                            type="text"
+                            value={installment}
+                            onChange={(e) => {
+                               
+                                setInstallment(e.target.value);
+                            }}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            placeholder="1 or 2"
+                            required
+                        />
+                        <span className="text-slate-500 font-medium">Select 0 for One time payment , other wise write intallment number.</span>
                     </div>
 
                     {/* File Upload */}
