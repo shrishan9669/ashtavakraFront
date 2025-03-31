@@ -12,12 +12,12 @@ export default function Header({ onSignupclick, onLoginclick,setSidebar }: any) 
     setSidebar((prevState: boolean) => !prevState);
   };
   return (
-    <header className={`bg-white w-full ${["/courses", "/profile-page", "/admin", "/view", "/paymentdetails"].includes(location.pathname) ? "" : ""} shadow-lg py-2 px-6 md:px-32 flex justify-between items-center`}>
+    <header className={`bg-white w-full ${["/courses/12", "/profile-page", "/admin", "/view", "/paymentdetails"].includes(location.pathname) ? "" : " md:fixed"} shadow-lg py-2 px-6 md:px-32 flex justify-between items-center`}>
       <div onClick={toggleState} className="md:hidden text-blue-400 bg-slate-200 p-2 rounded-full block">
        <FaArrowRight/>  
       </div> 
       <div className="flex items-center space-x-3">
-        <img src="./logo.jpg" alt="Vive Logo" className="h-14 md:h-20 rounded-full w-14 md:w-20" />
+        <img src="../public/logo.jpg" alt="Vive Logo" className="h-14 md:h-20 rounded-full w-14 md:w-20" />
         <span className="text-lg md:text-xl flex flex-col font-bold text-gray-800">अष्टावक्र <span>अकैडमी</span></span>
       </div>
       
@@ -30,6 +30,9 @@ export default function Header({ onSignupclick, onLoginclick,setSidebar }: any) 
             <BsPersonFill onClick={() => (window.location.href = "/profile-page")} className="text-4xl text-white" />
           </div>
         )}
+        {localStorage.getItem('role') === 'teacher' ? <span className="font-medium hover:text-blue-500 cursor-pointer" onClick={()=>{
+          window.location.href = '/admin'
+        }}>Admin</span>:''}
         <span className="font-medium cursor-pointer hover:text-blue-400 transition-all duration-300" onClick={()=> window.location.href = '/'}>Home</span>
       </div>
       
