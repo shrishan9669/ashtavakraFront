@@ -94,6 +94,7 @@ export default function Profilepage() {
                 url: `https://ashtabackendlatest.onrender.com/user/IsPayVerified?number=${localStorage.getItem('number')}`
             });
             if (Permit.data && Permit.data.success) {
+                console.log("Permit.data-> " , Permit.data)
                 setPayVerified(true);
             }
         } catch (err) {
@@ -117,7 +118,7 @@ export default function Profilepage() {
                             {timeLeft}
                         </p>
                     ) : (
-                        <div className={`flex flex-col items-center gap-3 ${timeLeft.includes('expired') ? 'text-slate-200' : ''}`}>
+                        <div className={`flex flex-col items-center gap-3 ${timeLeft.includes('expired') || payVerified ? 'hidden' : ''}`}>
                             <h1 className="text-base sm:text-lg font-medium bg-slate-100 px-3 w-full text-center py-2 rounded-lg">
                                 By clicking, your Demo ends in 4 days. After that make payment and get classes 🎓.
                             </h1>
@@ -181,12 +182,14 @@ export default function Profilepage() {
         </div>
     );
 }
-export function Purchases({ demoAccess, payVarified }: any) {
+export function Purchases({ demoAccess, payVerified }: any) {
+    console.log("In the purchases -> " + payVerified)
+    console.log("In the purchases -> " + demoAccess)
     return (
         <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-5 sm:gap-7">
             <h1 className="font-bold text-xl sm:text-2xl">My Purchases</h1>
 
-            {demoAccess || payVarified ? (
+            {demoAccess || payVerified ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <Card_course />
                     {/* Add more cards here if needed */}
