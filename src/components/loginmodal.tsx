@@ -399,7 +399,7 @@ export const MobileNumberModal = ({onClose,isOpen}:any)=>{
               setLoading(true)
                 try{
                   const user = await axios({
-                    url:"http://localhost:3000/user/checknumber",
+                    url:"https://ashtabackendlatest.onrender.com/user/checknumber",
                     data:{
                       number
                     },
