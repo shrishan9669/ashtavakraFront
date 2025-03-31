@@ -349,7 +349,7 @@ function Courses() {
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       {/* Attractive Offer Banner  */}
       {showOffer && (
-        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl shadow-lg p-4 mb-12 transform hover:scale-[1.01] transition-transform duration-300">
+        <div className="bg-gradient-to-r md:mt-0 mt-18 from-purple-600 to-indigo-600 rounded-xl shadow-lg p-4 mb-12 transform hover:scale-[1.01] transition-transform duration-300">
           <div className="max-w-4xl mx-auto text-center">
             <p className="text-white text-lg sm:text-xl font-bold mb-2">
               🎉 LIMITED TIME OFFER! 🎉
