@@ -226,7 +226,7 @@ export default function Header({ onSignupclick, onLoginclick, setSidebar }: any)
       
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="absolute top-20 right-6 z-50 bg-white shadow-xl rounded-xl p-4 flex flex-col items-center space-y-3 md:hidden border border-gray-100 w-64 mobile-menu">
+        <div className="absolute top-16 right-6  z-50 bg-white shadow-xl rounded-xl p-4 flex flex-col items-center space-y-1 md:hidden border  border-gray-100 w-64 mobile-menu">
           {navLinks.map((link) => (
             <a
               key={link.name}
@@ -238,7 +238,6 @@ export default function Header({ onSignupclick, onLoginclick, setSidebar }: any)
             </a>
           ))}
           
-          <div className="w-full border-t border-gray-100 my-1"></div>
           
           {!isLoggedIn ? (
             <>
