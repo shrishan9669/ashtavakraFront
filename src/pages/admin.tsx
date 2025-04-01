@@ -4,7 +4,7 @@ import Loader from "../components/loader";
 
 export default function Admin() {
     const [link, setLink] = useState('');
-    const [course, setCourse] = useState('');
+    const [Class, setClass] = useState('');
     const [msg, setMsg] = useState('');
     const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
@@ -30,8 +30,8 @@ export default function Admin() {
     }
 
     const handleSubmitLink = async () => {
-        if (!link || !course) {
-            alert("Both course and link fields are required!");
+        if (!link || !Class) {
+            alert("Both Class and link fields are required!");
             return;
         }
 
@@ -39,14 +39,14 @@ export default function Admin() {
         try {
             const res = await axios({
                 url: 'https://ashtabackendlatest.onrender.com/user/linkpasting',
-                data: { link, course },
+                data: { link, Class },
                 method: 'POST'
             });
 
             if (res.data?.success) {
                 setMsg(res.data.message);
                 setLink('');
-                setCourse('');
+                setClass('');
                 setTimeout(() => setMsg(''), 3000);
             }
         } catch (err) {
@@ -75,11 +75,16 @@ export default function Admin() {
 
     const [loading2,setLoading2] = useState(false)
 
+    const[classremove,setClassremove] = useState('')
     async function RemovelastLink(){
+        if(!classremove){
+            alert("Enter Class number to Remove..")
+            return ;
+        }
         setLoading2(true)
         try{
          const Delete =  await axios({
-            url:'https://ashtabackendlatest.onrender.com/user/removelastLink',
+            url:`https://ashtabackendlatest.onrender.com/user/removelastLink?Class=${classremove}`,
             method:'DELETE'
           })
             
@@ -111,16 +116,19 @@ export default function Admin() {
                 <div className="w-full lg:w-3/5 p-4 sm:p-6">
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
-                            <label className="font-medium text-sm sm:text-base">Select course:</label>
+                            <label className="font-medium text-sm sm:text-base">Select class:</label>
                             <select
-                                value={course}
-                                onChange={(e) => setCourse(e.target.value)}
+                                value={Class}
+                                onChange={(e) => {
+                                    console.log(e.target.value)
+                                    setClass(e.target.value)
+                                }}
                                 className="border border-gray-300 rounded-lg p-2 sm:p-3 font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
                                 <option value="">Select..</option>
-                                <option value="Maths class">Maths class</option>
-                                <option value="Science class">Science class</option>
-                                <option value="Sst class">SST class</option>
+                                <option value="9">9th</option>
+                                <option value="10">10th</option>
+                                
                             </select>
                         </div>
 
@@ -138,7 +146,7 @@ export default function Admin() {
                         </div>
 
                         <div className="flex justify-between mt-2">
-                            <button></button>
+                            
                             <button
                                 onClick={handleSubmitLink}
                                 disabled={loading}
@@ -152,13 +160,18 @@ export default function Admin() {
                             </button>
 
                             {/* Remove last link */}
-                            <button
+
+                            <div className="flex gap-3 ">
+                                <input type="number" className="p-2 rounded-lg " onChange={(e)=> setClassremove(e.target.value)} placeholder="class number to remove.." />
+                                <button
                             onClick={RemovelastLink}
                             className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-white font-medium transition-all duration-200 ${
                                     loading 
                                         ? 'bg-gray-400 cursor-not-allowed' 
                                         : 'bg-red-500 hover:bg-red-600 shadow-md hover:shadow-lg'
                                 }`}>{loading2 ? <Loader/>:"Remove last link"}</button>
+                            </div>
+                          
                         </div>
 
                         {msg && (
