@@ -384,7 +384,7 @@ export const MobileNumberModal = ({onClose,isOpen}:any)=>{
         <div className='bg-white flex flex-col  gap-6 p-8 rounded-2xl shadow-2xl border border-gray-300 relative w-full max-w-md'>
  {/* heading and cross button */}
  <div className='flex justify-between items-center '>
-            <h1 className='font-bold text-lg'>Enter your phone number</h1>
+            <h1 className='font-bold text-lg'>Enter your phone number for Login.</h1>
             <button
                 onClick={onClose}
                 className="text-3xl cursor-pointer font-bold text-gray-600 hover:text-black"
