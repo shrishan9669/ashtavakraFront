@@ -5,7 +5,7 @@ export default function Course1() {
     const [isOpen, setIsOpen] = useState(false)
     const [installment,setInstallment] = useState('1')
     return (
-        <div className="w-full">
+        <div className={`w-full ${location.pathname==='/courses/12' ? 'mt-32':''}`}>
             {/* Banner */}
             <div className="bg-blue-500 h-auto min-h-[200px] md:h-[270px] flex flex-col md:flex-row p-6 md:pl-10 lg:pl-20 items-center relative justify-between">
                 <h1 className="text-2xl md:text-3xl lg:text-4xl text-white font-bold max-w-full md:max-w-[690px] mb-4 md:mb-0 text-center md:text-left">
@@ -219,7 +219,7 @@ function Card({ onOpen ,installment,setInstallment}: any) {
     
     return (
         <div 
-            className="w-full sm:w-[360px] translate-y-[100px] h-auto rounded-xl border border-gray-200 shadow-sm bg-white mx-auto transition-all duration-300 hover:shadow-md hover:border-gray-300"
+            className={`w-full sm:w-[360px] translate-y-[100px] h-auto rounded-xl border border-gray-200 shadow-sm bg-white mx-auto transition-all duration-300 hover:shadow-md hover:border-gray-300   `}    
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
