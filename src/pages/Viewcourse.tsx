@@ -11,7 +11,7 @@ export default function View() {
         try {
             setLoading(true);
             const res = await axios({
-                url: `https://ashtabackendlatest.onrender.com/user/getlatestlink?Class=10`,
+                url: `https://vigyanbackend.onrender.com/user/getlatestlink?Class=10`,
                 method: 'GET'
             });
 
