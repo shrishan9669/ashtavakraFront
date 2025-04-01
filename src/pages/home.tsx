@@ -95,7 +95,7 @@ export function Purchases() {
    async function IsPaymentVerified() {
     try {
         const Permit = await axios({
-            url: `https://ashtabackendlatest.onrender.com/user/IsPayVerified?number=${localStorage.getItem('number')}`,
+            url: `https://vigyanbackend.onrender.com/user/IsPayVerified?number=${localStorage.getItem('number')}`,
             method:'GET'
         });
         if (Permit.data && Permit.data.success) {
