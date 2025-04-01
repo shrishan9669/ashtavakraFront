@@ -189,6 +189,7 @@ export default function Header({ onSignupclick, onLoginclick, setSidebar }: any)
           {!isLoggedIn ? (
             <>
               <button 
+              id="headerLogin"
                 onClick={onLoginclick}
                 className="px-5 py-2 rounded-lg font-medium text-blue-600 hover:bg-blue-50 menu-item"
               >
@@ -242,6 +243,7 @@ export default function Header({ onSignupclick, onLoginclick, setSidebar }: any)
           {!isLoggedIn ? (
             <>
               <button 
+              id="headerLogin"
                 onClick={() => {
                   onLoginclick();
                   setMenuOpen(false);
