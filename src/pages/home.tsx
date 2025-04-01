@@ -67,6 +67,7 @@ export default function Home({sidebar}:any) {
                 localStorage.removeItem('userid')
                 localStorage.removeItem('promo')
                 localStorage.removeItem('role')
+                localStorage.removeItem('class')
                 window.location.href='/'
               }} 
               className="flex cursor-pointer gap-3 text-gray-600 items-center"
@@ -370,7 +371,11 @@ function Courses() {
       )}
 
 
-      {/* Course Card */}
+      {/* Course Card class 9th */}
+
+
+   {localStorage.getItem('token') ? localStorage.getItem('class')==='9' ?
+      //{/* Course Card class 9th */}
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-xl">
           {/* Image with overlay */}
@@ -382,7 +387,143 @@ function Courses() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
             <div className="absolute bottom-6 left-6">
-              <h2 className="text-white text-2xl sm:text-3xl font-bold">Advanced STEM Education</h2>
+              <h2 className="text-white text-2xl sm:text-3xl font-bold">Advanced STEM Education Class 9th.</h2>
+              <p className="text-gray-200 mt-1">Master the fundamentals of Science & Math</p>
+            </div>
+          </div>
+          
+          {/* Card Content */}
+          <div className="p-6 sm:p-8">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800">Course Highlights</h3>
+                <ul className="mt-3 space-y-2 text-gray-600">
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Special Doubt Sessions.
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Core Concept Clarity.
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Weekly Tests .
+                  </li>
+                </ul>
+              </div>
+              <div className="text-right">
+                {showOffer && <div><p className="text-sm text-gray-500">Regular Price</p>
+                <p className="text-gray-400 line-through">₹7,200</p>
+                <p className="text-sm text-gray-500 mt-2">Discounted Price</p></div>}
+                
+                {!showOffer && <p className="text-sm text-right text-gray-500">Price</p>}
+                <p className="text-2xl font-bold text-purple-600">{showOffer ? '₹6,500':'₹7,200'}</p>
+              </div>
+            </div>
+            
+            {/* CTA Button */}
+            <div className="mt-8 text-center">
+              <button 
+                onClick={() => window.location.href = '/courses/12'}
+                className="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full group shadow-lg hover:shadow-purple-500/30 cursor-pointer hover:scale-[1.1] transition-all duration-300"
+              >
+               View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div> :
+
+      //{/* Course Card class 10th */}
+      <div className="max-w-4xl mx-auto mt-32">
+        <div className="bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-xl">
+          {/* Image with overlay */}
+          <div className="relative">
+            <img 
+              className="w-full h-64 sm:h-96 object-cover" 
+              src="https://media.istockphoto.com/id/611751296/photo/stem-concept-with-drawing-background-magnifying-glass-over-education-background.webp?a=1&b=1&s=612x612&w=0&k=20&c=9XhJbkAGJwFVjF01TkJoNq5fGc7UqtdfIAC7vtzVEVU=" 
+              alt="STEM Education Course" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-6 left-6">
+              <h2 className="text-white text-2xl sm:text-3xl font-bold">Advanced STEM Education Class 10th.</h2>
+              <p className="text-gray-200 mt-1">Master the fundamentals of Science & Math</p>
+            </div>
+          </div>
+          
+          {/* Card Content */}
+          <div className="p-6 sm:p-8">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800">Course Highlights</h3>
+                <ul className="mt-3 space-y-2 text-gray-600">
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Special Doubt Sessions.
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Core Concept Clarity.
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Weekly Tests .
+                  </li>
+                </ul>
+              </div>
+              <div className="text-right">
+                {showOffer && <div><p className="text-sm text-gray-500">Regular Price</p>
+                <p className="text-gray-400 line-through">₹7,200</p>
+                <p className="text-sm text-gray-500 mt-2">Discounted Price</p></div>}
+                
+                {!showOffer && <p className="text-sm text-right text-gray-500">Price</p>}
+                <p className="text-2xl font-bold text-purple-600">{showOffer ? '₹6,500':'₹7,200'}</p>
+              </div>
+            </div>
+            
+            {/* CTA Button */}
+            <div className="mt-8 text-center">
+              <button 
+                onClick={() => window.location.href = '/courses/12'}
+                className="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full group shadow-lg hover:shadow-purple-500/30 cursor-pointer hover:scale-[1.1] transition-all duration-300"
+              >
+               View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>:
+
+      // other wise
+
+
+      <div>
+        //{/* Course Card class 9th */}
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-xl">
+          {/* Image with overlay */}
+          <div className="relative">
+            <img 
+              className="w-full h-64 sm:h-96 object-cover" 
+              src="https://media.istockphoto.com/id/611751296/photo/stem-concept-with-drawing-background-magnifying-glass-over-education-background.webp?a=1&b=1&s=612x612&w=0&k=20&c=9XhJbkAGJwFVjF01TkJoNq5fGc7UqtdfIAC7vtzVEVU=" 
+              alt="STEM Education Course" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-6 left-6">
+              <h2 className="text-white text-2xl sm:text-3xl font-bold">Advanced STEM Education Class 9th.</h2>
               <p className="text-gray-200 mt-1">Master the fundamentals of Science & Math</p>
             </div>
           </div>
@@ -435,6 +576,83 @@ function Courses() {
           </div>
         </div>
       </div>
+
+      //{/* Course Card class 10th */}
+      <div className="max-w-4xl mx-auto mt-32">
+        <div className="bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-xl">
+          {/* Image with overlay */}
+          <div className="relative">
+            <img 
+              className="w-full h-64 sm:h-96 object-cover" 
+              src="https://media.istockphoto.com/id/611751296/photo/stem-concept-with-drawing-background-magnifying-glass-over-education-background.webp?a=1&b=1&s=612x612&w=0&k=20&c=9XhJbkAGJwFVjF01TkJoNq5fGc7UqtdfIAC7vtzVEVU=" 
+              alt="STEM Education Course" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-6 left-6">
+              <h2 className="text-white text-2xl sm:text-3xl font-bold">Advanced STEM Education Class 10th.</h2>
+              <p className="text-gray-200 mt-1">Master the fundamentals of Science & Math</p>
+            </div>
+          </div>
+          
+          {/* Card Content */}
+          <div className="p-6 sm:p-8">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800">Course Highlights</h3>
+                <ul className="mt-3 space-y-2 text-gray-600">
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Special Doubt Sessions.
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Core Concept Clarity.
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Weekly Tests .
+                  </li>
+                </ul>
+              </div>
+              <div className="text-right">
+                {showOffer && <div><p className="text-sm text-gray-500">Regular Price</p>
+                <p className="text-gray-400 line-through">₹7,200</p>
+                <p className="text-sm text-gray-500 mt-2">Discounted Price</p></div>}
+                
+                {!showOffer && <p className="text-sm text-right text-gray-500">Price</p>}
+                <p className="text-2xl font-bold text-purple-600">{showOffer ? '₹6,500':'₹7,200'}</p>
+              </div>
+            </div>
+            
+            {/* CTA Button */}
+            <div className="mt-8 text-center">
+              <button 
+                onClick={() => window.location.href = '/courses/12'}
+                className="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full group shadow-lg hover:shadow-purple-500/30 cursor-pointer hover:scale-[1.1] transition-all duration-300"
+              >
+               View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      </div>
+      }
+
+
+      
+      
+
+      
+      
     </div>
   );
 }
