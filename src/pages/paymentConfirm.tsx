@@ -35,7 +35,7 @@ export default function PaymentConfirm() {
     const makePurchase = async () => {
         try {
             const response = await axios.post(
-                'https://ashtabackendlatest.onrender.com/user/addpurchase',
+                'https://vigyanbackend.onrender.com/user/addpurchase',
                 { name, number, transactionid ,installment }
             );
             if (response.data?.msg) {
@@ -66,7 +66,7 @@ export default function PaymentConfirm() {
         else formData.append('promo','unapplied');
         try {
             await axios.post(
-                "https://ashtabackendlatest.onrender.com/user/sendMail",
+                "https://vigyanbackend.onrender.com/user/sendMail",
                 formData,
                 { headers: { "Content-Type": "multipart/form-data" } }
             );
