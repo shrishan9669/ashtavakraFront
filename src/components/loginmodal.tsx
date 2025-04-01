@@ -35,6 +35,7 @@ export const SignupModal = ({isOpen,onClose}:any) => {
     const [password,setPassword] = useState('')
     const [email,setEmail] = useState('')
     const [phone,setPhone] = useState('')
+    const [Class,setClass] = useState('')
     const [msg,setMsg]  = useState('')
 
  
@@ -100,6 +101,21 @@ export const SignupModal = ({isOpen,onClose}:any) => {
                 required
               />
             </div>
+            {/* class */}
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-2" htmlFor="class">
+                Class:
+              </label>
+              <input
+              onChange={(e)=> setClass(e.target.value)}
+                id="class"
+                type="number"
+                placeholder="Enter your class 9th or 10th.."
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+
             <div className="mb-4">
               <label className="block text-gray-700 font-medium mb-2" htmlFor="email">
                 Email
@@ -174,7 +190,7 @@ export const SignupModal = ({isOpen,onClose}:any) => {
                       url:"https://ashtabackendlatest.onrender.com/user/createuser",
                       method:"POST",
                       data:{
-                        email,password,name,number:phone,role:"student"
+                        email,password,name,number:phone,role:"student",Class:Class
                       }
                      })
     
@@ -564,6 +580,7 @@ function Loginwithpassword ({onClose,isOpen}:any){
              setMsg('Successfully loggedIn');
              localStorage.setItem('token',res.data.token);
              localStorage.setItem('userid',res.data.userid)
+             localStorage.setItem('class',res.data.Class)
              window.location.href = '/'
         }
         else {
