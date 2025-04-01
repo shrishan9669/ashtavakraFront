@@ -167,8 +167,9 @@ export default function Header({ onSignupclick, onLoginclick, setSidebar }: any)
               alt="Vive Logo" 
               className="h-12 md:h-16 rounded-full w-12 md:w-16 border-2 border-blue-100 shadow-sm" 
             />
-            <span className="text-lg md:text-xl flex flex-col font-bold text-gray-800">
-              <span className="bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">विज्ञान</span> 
+            <span className="text-lg md:text-xl flex flex-col items-center font-bold text-gray-800">
+              
+              <span className="bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">अष्टावक्र विज्ञान</span> 
               <span className="text-2xl bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">संस्था</span>
             </span>
           </div>
