@@ -9,7 +9,7 @@ export default function Course1() {
             {/* Banner */}
             <div className="bg-blue-500 h-auto min-h-[200px] md:h-[270px] flex flex-col md:flex-row p-6 md:pl-10 lg:pl-20 items-center relative justify-between">
                 <h1 className="text-2xl md:text-3xl lg:text-4xl text-white font-bold max-w-full md:max-w-[690px] mb-4 md:mb-0 text-center md:text-left">
-                    Complete Science and Maths cohort - Class 10th
+                    Complete Science and Maths cohort.
                 </h1>
                 <div className="w-full md:w-auto md:relative md:right-24 md:top-24">
                     <Card installment={installment} setInstallment={setInstallment} onOpen={() => setIsOpen(true)} />
@@ -62,7 +62,146 @@ export default function Course1() {
         </div>
     )
 }
+// export default function Course1() {
+//     const [isOpen, setIsOpen] = useState(false);
+//     const [installment, setInstallment] = useState('1');
+//     const [activeTab, setActiveTab] = useState('overview');
 
+//     return (
+//         <div className="w-full bg-gray-50">
+//             {/* Hero Section */}
+//             <div className="relative bg-gradient-to-r from-blue-600 to-indigo-700 h-auto min-h-[300px] md:h-[400px] flex flex-col md:flex-row p-6 md:px-10 lg:px-20 items-center justify-between overflow-hidden">
+//                 {/* Decorative elements */}
+//                 <div className="absolute top-0 left-0 w-full h-full opacity-10">
+//                     <div className="absolute top-20 left-20 w-40 h-40 rounded-full bg-white"></div>
+//                     <div className="absolute bottom-10 right-32 w-60 h-60 rounded-full bg-white"></div>
+//                 </div>
+                
+//                 <div className="z-10 flex flex-col items-start max-w-full md:max-w-[60%]">
+//                     <span className="text-white bg-blue-500 bg-opacity-30 px-3 py-1 rounded-full text-sm mb-3 backdrop-blur-sm">
+//                         New Cohort Starting Soon
+//                     </span>
+//                     <h1 className="text-3xl md:text-4xl lg:text-5xl text-white font-bold mb-4 leading-tight">
+//                         Complete Science <br/> & Mathematics Program
+//                     </h1>
+//                     <p className="text-blue-100 mb-6 text-lg">
+//                         Master core concepts from basics to advanced level
+//                     </p>
+//                     <button 
+//                         onClick={() => setIsOpen(true)}
+//                         className="bg-white text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg"
+//                     >
+//                         Enroll Now
+//                     </button>
+//                 </div>
+                
+//                 <div className="z-10 w-full mt-10 md:mt-0 md:w-[350px] relative md:-bottom-10">
+//                     <Card 
+//                         installment={installment} 
+//                         setInstallment={setInstallment} 
+//                         onOpen={() => setIsOpen(true)} 
+//                     />
+//                 </div>
+//             </div>
+
+//             {/* Content Navigation */}
+//             <div className="sticky top-0 z-20 bg-white shadow-sm">
+//                 <div className="max-w-full px-6 md:px-10 lg:px-20 flex overflow-x-auto hide-scrollbar">
+//                     <button 
+//                         onClick={() => setActiveTab('overview')}
+//                         className={`px-4 py-3 font-medium text-sm md:text-base whitespace-nowrap ${activeTab === 'overview' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600 hover:text-blue-500'}`}
+//                     >
+//                         Overview
+//                     </button>
+//                     <button 
+//                         onClick={() => setActiveTab('curriculum')}
+//                         className={`px-4 py-3 font-medium text-sm md:text-base whitespace-nowrap ${activeTab === 'curriculum' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600 hover:text-blue-500'}`}
+//                     >
+//                         Curriculum
+//                     </button>
+//                     <button 
+//                         onClick={() => setActiveTab('pricing')}
+//                         className={`px-4 py-3 font-medium text-sm md:text-base whitespace-nowrap ${activeTab === 'pricing' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600 hover:text-blue-500'}`}
+//                     >
+//                         Pricing
+//                     </button>
+//                     <button 
+//                         onClick={() => setActiveTab('faq')}
+//                         className={`px-4 py-3 font-medium text-sm md:text-base whitespace-nowrap ${activeTab === 'faq' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600 hover:text-blue-500'}`}
+//                     >
+//                         FAQ
+//                     </button>
+//                 </div>
+//             </div>
+
+//             {/* Main Content */}
+//             <div className="max-w-full px-6 md:px-10 lg:px-20 py-8 md:py-12 lg:max-w-[800px] mx-auto">
+//                 {/* Overview Section */}
+//                 {activeTab === 'overview' && (
+//                     <div className="bg-white rounded-xl shadow-sm p-6 md:p-8 mb-8">
+//                         <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+//                             <svg className="w-6 h-6 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+//                             </svg>
+//                             Course Overview
+//                         </h2>
+                        
+//                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+//                             <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+//                                 <h3 className="font-semibold text-blue-700 mb-2 flex items-center">
+//                                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+//                                     </svg>
+//                                     Starts From
+//                                 </h3>
+//                                 <p className="text-gray-700">1st April 2025</p>
+//                             </div>
+                            
+//                             <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+//                                 <h3 className="font-semibold text-blue-700 mb-2 flex items-center">
+//                                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+//                                     </svg>
+//                                     Duration
+//                                 </h3>
+//                                 <p className="text-gray-700">1 Year Access</p>
+//                             </div>
+//                         </div>
+                        
+//                         <div className="space-y-4">
+//                             <h3 className="text-lg font-semibold text-gray-800">What You'll Learn</h3>
+//                             <p className="text-gray-700 leading-relaxed">
+//                                 In this comprehensive program, we'll take you from fundamental concepts to advanced problem-solving techniques in both Science and Mathematics. Our structured approach ensures you build a solid foundation while developing the critical thinking skills needed to tackle complex problems.
+//                             </p>
+                            
+//                             <div className="mt-6 space-y-3">
+//                                 <div className="flex items-start">
+//                                     <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+//                                     </svg>
+//                                     <span className="text-gray-700">Master core concepts from basic to advanced levels</span>
+//                                 </div>
+//                                 <div className="flex items-start">
+//                                     <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+//                                     </svg>
+//                                     <span className="text-gray-700">Develop problem-solving strategies for any question type</span>
+//                                 </div>
+//                                 <div className="flex items-start">
+//                                     <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+//                                     </svg>
+//                                     <span className="text-gray-700">Gain confidence through structured practice and expert guidance</span>
+//                                 </div>
+//                             </div>
+//                         </div>
+//                     </div>
+//                 )}
+
+//                 </div>
+//                 </div>
+//                 )
+//                 }
 function Card({ onOpen ,installment,setInstallment}: any) {
     // const [installment, setInstallment] = useState('1');
     const [isHovered, setIsHovered] = useState(false);
@@ -99,7 +238,7 @@ function Card({ onOpen ,installment,setInstallment}: any) {
                 <div className="flex justify-between items-start mb-3">
                     <div>
                         <span className="text-gray-500 text-xs font-medium uppercase tracking-wider">Course</span>
-                        <h3 className="text-lg font-semibold text-gray-900 mt-1">Complete Maths and Science class 10th.</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 mt-1">Complete Maths and Science class.</h3>
                     </div>
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                         Popular
