@@ -30,7 +30,7 @@ export default function PaymentModal({ isOpen, onClose, installment }: any) {
     
     setLoading(true);
     try {
-      const response = await axios.get('https://ashtabackendlatest.onrender.com/user/checkPromo', {
+      const response = await axios.get('https://vigyanbackend.onrender.com/user/checkPromo', {
         params: { code }
       });
       
@@ -90,7 +90,7 @@ export default function PaymentModal({ isOpen, onClose, installment }: any) {
             <div className=" bg-gray-50 rounded-xl border border-gray-200 mb-4">
               <img 
                 className="w-full rounded-xl h-48 object-contain" 
-                src="/chunnuqr.jpg" 
+                src="../../public/chunnuqr.jpg" 
                 alt="Payment QR Code"
               />
             </div>
