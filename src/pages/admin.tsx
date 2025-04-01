@@ -15,7 +15,7 @@ export default function Admin() {
         setLoading1(true);
         try {
             const res = await axios({
-                url: 'https://ashtabackendlatest.onrender.com/user/getpending',
+                url: 'https://vigyanbackend.onrender.com/user/getpending',
                 method: 'GET'
             });
 
@@ -38,7 +38,7 @@ export default function Admin() {
         setLoading(true);
         try {
             const res = await axios({
-                url: 'https://ashtabackendlatest.onrender.com/user/linkpasting',
+                url: 'https://vigyanbackend.onrender.com/user/linkpasting',
                 data: { link, Class },
                 method: 'POST'
             });
@@ -61,7 +61,7 @@ export default function Admin() {
         setLoadingObj(prev => ({ ...prev, [id]: true }));
         try {
             await axios({
-                url: `https://ashtabackendlatest.onrender.com/user/varifytrue?id=${id}`,
+                url: `https://vigyanbackend.onrender.com/user/varifytrue?id=${id}`,
                 method: 'PUT'
             });
             // Refresh the pending list after verification
@@ -84,7 +84,7 @@ export default function Admin() {
         setLoading2(true)
         try{
          const Delete =  await axios({
-            url:`https://ashtabackendlatest.onrender.com/user/removelastLink?Class=${classremove}`,
+            url:`https://vigyanbackend.onrender.com/user/removelastLink?Class=${classremove}`,
             method:'DELETE'
           })
             
