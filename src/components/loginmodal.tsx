@@ -37,6 +37,8 @@ export const SignupModal = ({isOpen,onClose}:any) => {
     const [phone,setPhone] = useState('')
     const [msg,setMsg]  = useState('')
 
+ 
+
     const [error,setError] = useState('');
     const[emailmsg,setEmailmsg] = useState('');
     const[loading,setLoading]  = useState(false)
@@ -74,6 +76,7 @@ export const SignupModal = ({isOpen,onClose}:any) => {
               <div className='flex items-center justify-between'>
                   <h2 className="text-xl  font-bold ">Sign Up as a Student.</h2>
               <button
+              id='close'
                   onClick={onClose}
                   className="text-3xl cursor-pointer font-bold text-gray-600 hover:text-black"
               >
@@ -176,9 +179,14 @@ export const SignupModal = ({isOpen,onClose}:any) => {
                      })
     
                      console.log(res.data)
-                     if(res.data && res.data.msg){
+                     if(res.data && res.data.newUser){
                       setMsg(res.data.msg)
+                      onClose();
+                      document.getElementById('headerLogin')?.click()
+                      
                      }
+                     else setMsg(res.data.msg)
+                     
               }
               catch(err){
                   console.log(err);
@@ -313,9 +321,12 @@ export const SignupModal = ({isOpen,onClose}:any) => {
                      })
     
                      console.log(res.data)
-                     if(res.data && res.data.msg){
+                     if(res.data && res.data.newUser){
                       setMsg(res.data.msg)
+                      onClose();
+                      document.getElementById('headerLogin')?.click()
                      }
+                     else setMsg(res.data.msg)
               }
               catch(err){
                   console.log(err);
@@ -364,7 +375,7 @@ export const MobileNumberModal = ({onClose,isOpen}:any)=>{
   }
      return (
       // Conditional Rendering.
-      <div>
+      <div id='login'>
         {next ? <Aftermobile onClose={onClose} isOpen={isOpen}/>
         
         :
@@ -468,7 +479,7 @@ function Aftermobile({onClose,isOpen}:any){
         setLoading(true)
          try{
             const res = await axios({
-              url:'http://localhost:3000/user/send-otp',
+              url:'https://ashtabackendlatest.onrender.com/user/send-otp',
               data:{
                 phonenumber:localStorage.getItem('number')
               },
