@@ -12,14 +12,17 @@ export default function Profilepage() {
     async function Getdemodetails() {
         try {
             const access = await axios({
-                url: `https://ashtabackendlatest.onrender.com/user/checkDemoaccess?id=${localStorage.getItem('userid')}`,
+                url: `https://vigyanbackend.onrender.com/user/checkDemoaccess?id=${localStorage.getItem('userid')}`,
                 method: 'GET'
             });
             if (access.data && access.data.success) {
                 setDemoEnd(new Date(access.data.demoEnd));
+                console.log(new Date(access.data.demoEnd))
                 setDemoaccess(true);
             } else {
+                setDemoEnd(new Date(access.data.demoEnd))
                 setDemoaccess(false);
+                
             }
         } catch (err) {
             console.log(err);
@@ -33,7 +36,7 @@ export default function Profilepage() {
     async function SetAccessfalseAfterExpired() {
         try {
             await axios({
-                url: `https://ashtabackendlatest.onrender.com/user/setAccessfalse?id=${localStorage.getItem('userid')}`,
+                url: `https://vigyanbackend.onrender.com/user/setAccessfalse?id=${localStorage.getItem('userid')}`,
                 method: 'PUT'
             });
         } catch (err) {
@@ -43,13 +46,17 @@ export default function Profilepage() {
 
     // Countdown Timer Function
     useEffect(() => {
-        if (!demoEnd || isNaN(demoEnd.getTime())) return;
+        if (!demoEnd ) {
+            console.log("Yes this one")
+            return;
+        }
 
         const interval = setInterval(() => {
             const now = new Date();
             const timeDiff = demoEnd.getTime() - now.getTime();
 
             if (timeDiff <= 0) {
+                console.log("Time expired")
                 SetAccessfalseAfterExpired();
                 setTimeLeft("Demo expired! Buy course to continue.");
                 clearInterval(interval);
@@ -71,7 +78,7 @@ export default function Profilepage() {
         setLoading(true)
         try {
            const Demo =  await axios({
-                url: "https://ashtabackendlatest.onrender.com/user/start-demo",
+                url: "https://vigyanbackend.onrender.com/user/start-demo",
                 data: {
                     userid: localStorage.getItem('userid')
                 },
@@ -91,7 +98,7 @@ export default function Profilepage() {
     async function IsPaymentVerified() {
         try {
             const Permit = await axios({
-                url: `https://ashtabackendlatest.onrender.com/user/IsPayVerified?number=${localStorage.getItem('number')}`
+                url: `https://vigyanbackend.onrender.com/user/IsPayVerified?number=${localStorage.getItem('number')}`
             });
             if (Permit.data && Permit.data.success) {
                 console.log("Permit.data-> " , Permit.data)
@@ -161,6 +168,9 @@ export default function Profilepage() {
                     onClick={() => {
                         localStorage.removeItem('number');
                         localStorage.removeItem('token');
+                        localStorage.removeItem('role');
+                        localStorage.removeItem('class');
+                        localStorage.removeItem('userid');
                         window.location.href = '/';
                     }}
                     className="px-4 py-2 bg-gray-800 text-white rounded-full cursor-pointer font-medium hover:bg-gray-700 transition-colors duration-200 self-center sm:self-auto"
@@ -246,7 +256,7 @@ export function General() {
     async function Userdetails() {
         try {
             const res = await axios({
-                url: `https://ashtabackendlatest.onrender.com/user/details?number=${localStorage.getItem('number')}`,
+                url: `https://vigyanbackend.onrender.com/user/details?number=${localStorage.getItem('number')}`,
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 },
@@ -331,7 +341,7 @@ export function Security() {
         setLoading(true);
         try {
             const find = await axios({
-                url: `https://ashtabackendlatest.onrender.com/user/details?number=${localStorage.getItem('number')}`,
+                url: `https://vigyanbackend.onrender.com/user/details?number=${localStorage.getItem('number')}`,
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -350,7 +360,7 @@ export function Security() {
                 } else {
                     try {
                         const changepassword = await axios({
-                            url: 'https://ashtabackendlatest.onrender.com/user/changepassword',
+                            url: 'https://vigyanbackend.onrender.com/user/changepassword',
                             data: { number: localStorage.getItem('number'), newpass: confirm },
                             method: 'PUT',
                             headers: {
