@@ -31,7 +31,7 @@ export default function PaymentModal({ isOpen, onClose, installment }: any) {
     
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:3000/user/checkPromo', {
+      const response = await axios.get('https://vigyanbackend.onrender.com/user/checkPromo', {
         params: { code,userid:localStorage.getItem('userid') }
       });
       
