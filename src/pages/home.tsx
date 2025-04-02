@@ -1,205 +1,125 @@
-import axios from "axios"
-import { useEffect, useState } from "react"
-import Loader from "../components/loader";
+import {  useEffect, useState } from "react";
+import { FaDownload, FaHome } from "react-icons/fa";
+import { IoSettingsOutline } from "react-icons/io5";
+import { MdLogout } from "react-icons/md";
+import { SiGooglescholar } from "react-icons/si";
+import { Card_course, General, Security } from "./profile-page";
+import axios from "axios";
 
-export default function Profilepage() {
-    const [selected, setSelected] = useState('purchase');
-    const [demoAccess, setDemoaccess] = useState<Boolean | String>('');
-    const [demoEnd, setDemoEnd] = useState<Date | null>(null);
-    const [timeLeft, setTimeLeft] = useState("");
-    const [payVerified, setPayVerified] = useState(false);
-
-    async function Getdemodetails() {
-        try {
-            const access = await axios({
-                url: `https://vigyanbackend.onrender.com/user/checkDemoaccess?id=${localStorage.getItem('userid')}`,
-                method: 'GET'
-            });
-            if (access.data && access.data.success) {
-                setDemoEnd(new Date(access.data.demoEnd));
-                console.log(new Date(access.data.demoEnd))
-                setDemoaccess(true);
-            } else {
-                setDemoEnd(new Date(access.data.demoEnd))
-                setDemoaccess(false);
-                
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    useEffect(() => {
-        Getdemodetails();
-    }, [localStorage.getItem('userid')]);
-
-    async function SetAccessfalseAfterExpired() {
-        try {
-            await axios({
-                url: `https://vigyanbackend.onrender.com/user/setAccessfalse?id=${localStorage.getItem('userid')}`,
-                method: 'PUT'
-            });
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    // Countdown Timer Function
-    useEffect(() => {
-        if (!demoEnd ) {
-            console.log("Yes this one")
-            return;
-        }
-
-        const interval = setInterval(() => {
-            const now = new Date();
-            const timeDiff = demoEnd.getTime() - now.getTime();
-
-            if (timeDiff <= 0) {
-                console.log("Time expired")
-                SetAccessfalseAfterExpired();
-                setTimeLeft("Demo expired! Buy course to continue.");
-                clearInterval(interval);
-            } else {
-                const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
-                const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
-                const seconds = Math.floor((timeDiff / 1000) % 60);
-
-                setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s left`);
-            }
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [demoEnd]);
-
-    async function Startdemo() {
-        if (timeLeft.includes('expired')) return;
-        setLoading(true)
-        try {
-           const Demo =  await axios({
-                url: "https://vigyanbackend.onrender.com/user/start-demo",
-                data: {
-                    userid: localStorage.getItem('userid')
-                },
-                method: "POST"
-            });
-            if(Demo.data && Demo.data.success){
-                window.location.href = '/profile-page'
-            }
-        } catch (err) {
-            console.log(err);
-        }
-        finally{
-            setLoading(false)
-        }
-    }
-
-    async function IsPaymentVerified() {
-        try {
-            const Permit = await axios({
-                url: `https://vigyanbackend.onrender.com/user/IsPayVerified?number=${localStorage.getItem('number')}`
-            });
-            if (Permit.data && Permit.data.success) {
-                console.log("Permit.data-> " , Permit.data)
-                setPayVerified(true);
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    useEffect(() => {
-        IsPaymentVerified();
-    }, []);
-
-    const[loading,setLoading]  = useState(false)
-    return (
-        <div className="p-4 sm:p-6 md:p-10 lg:p-14 w-full max-w-7xl mx-auto">
-            {/* Demo Access Section */}
-            
-            {(demoAccess !== '' ) && (
-                <div className="mb-6">
-                    {demoAccess === true ? (
-                        <p className="text-white mb-3 rounded-xl md:rounded-2xl p-3 font-bold text-center text-lg sm:text-xl bg-black">
-                            {timeLeft}
-                        </p>
-                    ) : (
-                        <div className={`flex flex-col items-center gap-3 ${timeLeft.includes('expired') || payVerified ? 'hidden' : ''}`}>
-                            <h1 className="text-base sm:text-lg font-medium bg-slate-100 px-3 w-full text-center py-2 rounded-lg">
-                                By clicking, your Demo ends in 4 days. After that make payment and get classes 🎓.
-                            </h1>
-                            <button
-                                onClick={Startdemo}
-                                disabled={timeLeft.includes('expired')}
-                                className={`bg-blue-400 ${timeLeft.includes('expired') ? 'bg-gray-400 cursor-not-allowed' : 'hover:bg-blue-500'} px-4 py-2 rounded-full text-white font-medium transition-colors duration-200`}
-                            >
-                                {loading ? <Loader/>:"Start Demo"}
-                            </button>
-                        </div>
-                    )}
-                </div>
-            )}
-
-            {/* Navigation Tabs */}
-            <div className="flex flex-col sm:flex-row justify-between gap-4 pb-4 border-b border-slate-400">
-                <div className="flex gap-4 sm:gap-6 md:gap-10 overflow-x-auto pb-2">
-                    <button
-                        onClick={() => setSelected('purchase')}
-                        className={`font-medium whitespace-nowrap cursor-pointer transition-all duration-100 text-base sm:text-lg ${selected === 'purchase' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600'}`}
-                    >
-                        Purchases
-                    </button>
-                    <button
-                        onClick={() => setSelected('general')}
-                        className={`font-medium whitespace-nowrap cursor-pointer transition-all duration-100 text-base sm:text-lg ${selected === 'general' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600'}`}
-                    >
-                        General
-                    </button>
-                    <button
-                        onClick={() => setSelected('security')}
-                        className={`font-medium whitespace-nowrap cursor-pointer transition-all duration-100 text-base sm:text-lg ${selected === 'security' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600'}`}
-                    >
-                        Security
-                    </button>
-                </div>
-
-                <button
-                    onClick={() => {
-                        localStorage.removeItem('number');
-                        localStorage.removeItem('token');
-                        localStorage.removeItem('role');
-                        localStorage.removeItem('class');
-                        localStorage.removeItem('userid');
-                        window.location.href = '/';
-                    }}
-                    className="px-4 py-2 bg-gray-800 text-white rounded-full cursor-pointer font-medium hover:bg-gray-700 transition-colors duration-200 self-center sm:self-auto"
-                >
-                    Logout
-                </button>
-            </div>
-
-            {/* Content Section */}
-            <div className="mt-6">
-                {selected === 'purchase' ? (
-                    <Purchases demoAccess={demoAccess} payVerified={payVerified} />
-                ) : selected === 'general' ? (
-                    <General />
-                ) : (
-                    <Security />
-                )}
-            </div>
-        </div>
-    );
+interface YourComponentProps {
+  sidebar: boolean;
 }
-export function Purchases({ demoAccess, payVerified }: any) {
-    console.log("In the purchases -> " + payVerified)
-    console.log("In the purchases -> " + demoAccess)
+export default function Home({sidebar}:YourComponentProps) {
+  
+  const [element, setElement] = useState('course');
+  
+  return (
+    <div className="flex flex-col md:flex-row h-screen">
+    
+      
+      {/* Left Sidebar - responsive */}
+      <div 
+        id="sidebar"
+        className={` ${sidebar ? 'flex py-6':'hidden'}  bg-blue-100 w-full md:w-64 lg:w-[17%] h-auto md:h-full md:fixed top-0 md:top-24 left-0 pt-4 md:pt-10 pl-4 md:pl-10 md:flex flex-col gap-4 md:gap-10 `}
+      >
+        <span className="hidden md:block text-sm text-slate-500 font-medium">MAIN MENU</span>
+        
+        <div className={`flex items-center hover:text-blue-500 transition-all duration-200 ${element==='home' ? 'text-blue-500':''} gap-4`}>
+          <FaHome className="text-xl" />
+          <span onClick={()=> setElement('home')} className="font-medium cursor-pointer">Home</span>
+        </div>
+        
+        <div className={`flex items-center hover:text-blue-500 transition-all duration-200 ${element==='course' ? 'text-blue-500':''} gap-4`}>
+          <SiGooglescholar className="text-xl" />
+          <span onClick={()=> setElement('course')} className="font-medium cursor-pointer">Courses</span>
+        </div>
+
+        {/* purchases , settings , logout */}
+        {localStorage.getItem('token') ? (
+          <div className="flex flex-col gap-4 md:gap-10 pt-4 md:pt-10 border-t border-slate-400 mr-4 md:mr-8">
+            {/* purchases */}
+            <div
+              onClick={()=> setElement('purchase')}
+              className={`flex cursor-pointer gap-3 text-gray-600 items-center`}
+            >
+              <FaDownload className={`text-xl ${element==='purchase' ? 'text-blue-500':''}`}/>
+              <span className={`${element==='purchase' ? 'text-blue-500 font-bold':''}`}>Purchases</span>
+            </div>
+
+            {/* settings */}
+            <div
+              onClick={()=> setElement('settings')}
+              className="flex cursor-pointer gap-3 text-gray-600 items-center"
+            >
+              <IoSettingsOutline className={`text-xl ${element === 'settings' ? 'text-blue-500':''}`} />
+              <span className={`${element==='settings' ? 'text-blue-500 font-bold':''}`}>Settings</span>
+            </div>
+
+            <div
+              onClick={()=> window.location.href = '/profile-page'}
+              className="flex cursor-pointer gap-3   text-gray-600 items-center"
+            >
+              
+              <span className={`bg-blue-500 w-full py-2 font-medium text-white flex justify-center rounded-l-lg`}>Start Demo</span>
+            </div>
+
+            {/* logout */}
+            <div
+              onClick={()=>{
+                localStorage.removeItem('number')
+                localStorage.removeItem('token')
+                localStorage.removeItem('userid')
+                localStorage.removeItem('promo')
+                localStorage.removeItem('role')
+                localStorage.removeItem('class')
+                window.location.href='/'
+              }} 
+              className="flex cursor-pointer gap-3 text-gray-600 items-center"
+            >
+              <MdLogout className="text-xl text-gray-800"/>
+              <span className="font-medium">Logout</span>
+            </div>
+          </div>
+        ) : ''}
+      </div>
+
+      {/* Right Content - scrollable */}
+      <div className="mt-16 md:mt-0 md:ml-64 lg:ml-[17%] w-full md:w-[calc(100%-16rem)] lg:w-[83%] overflow-y-auto h-screen px-4 md:px-10 py-4 md:py-28">
+        {element === 'course' ? <Courses/> : 
+         element === 'home' ? <Left_home/> : 
+         element === 'purchase' ? <Purchases/> : 
+         <CombineGeneralandSecurity/>}
+      </div>
+    </div>
+  );
+}
+export function Purchases() {
+   const [payVerified,setPayVerified] = useState(false)
+   
+   async function IsPaymentVerified() {
+    try {
+        const Permit = await axios({
+            url: `https://vigyanbackend.onrender.com/user/IsPayVerified?number=${localStorage.getItem('number')}`,
+            method:'GET'
+        });
+        if (Permit.data && Permit.data.success) {
+            console.log("Permit.data-> " , Permit.data)
+            setPayVerified(true);
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+useEffect(() => {
+    IsPaymentVerified();
+}, []);
+
     return (
         <div className="p-4 sm:p-6 md:p-10 flex flex-col gap-5 sm:gap-7">
             <h1 className="font-bold text-xl sm:text-2xl">My Purchases</h1>
 
-            {demoAccess || payVerified ? (
+            { payVerified ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <Card_course />
                     {/* Add more cards here if needed */}
@@ -213,398 +133,565 @@ export function Purchases({ demoAccess, payVerified }: any) {
     );
 }
 
+function CombineGeneralandSecurity(){
+  const [selected,setSelected] = useState('general')
+  return (
+    <div className="flex flex-col gap-6 md:gap-10 py-6 md:py-10">
+      <div className="flex gap-4 md:gap-10 border-b border-slate-300 overflow-x-auto">
+        <span 
+          onClick={()=> setSelected('general')} 
+          className={`font-medium py-2 md:py-3 cursor-pointer transition-all duration-100 text-base md:text-lg whitespace-nowrap ${selected === 'general' ? 'text-blue-600 border-b-4':''}`}
+        >
+          General
+        </span>
+        <span 
+          onClick={()=> setSelected('security')} 
+          className={`font-medium py-2 md:py-3 cursor-pointer transition-all duration-100 text-base md:text-lg whitespace-nowrap ${selected === 'security' ? 'text-blue-600 border-b-4':''}`}
+        >
+          Security
+        </span>
+      </div>
 
-
-
-export function Card_course() {
-    return (
-        <div className="w-full max-w-sm sm:w-[350px] h-auto rounded-xl md:rounded-2xl border border-gray-200 shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white">
-            {/* Image with gradient overlay */}
-            <div className="h-48 sm:h-40 md:h-48 overflow-hidden relative">
-                <img 
-                    src={'./thumbnail.jpg'} 
-                    className="w-full h-full object-cover rounded-tl-xl md:rounded-tl-2xl rounded-tr-xl md:rounded-tr-2xl" 
-                    alt="Course thumbnail" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <span className="absolute top-3 right-3 bg-indigo-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">Popular</span>
-            </div>
-
-            {/* Card content */}
-            <div className="h-auto p-5 sm:p-6 flex flex-col gap-4">
-                <div>
-                  
-                    <h1 className="font-bold text-xl sm:text-2xl text-gray-800">Live 0-100 Complete Course for Class 9<sup>th</sup></h1>
-                    <p className="text-gray-500 text-sm mt-1 line-clamp-2">Master from scratch to advance with this comprehensive course covering all concepts with day to day examples.</p>
-                </div>
-                
-                
-                
-                {/* Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 mt-2">
-                    <button 
-                        onClick={() => window.location.href = `/view`}
-                        className="flex-1 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white font-medium transition-all duration-200 flex items-center justify-center gap-2"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                        </svg>
-                        View Course
-                    </button>
-                   
-                </div>
-            </div>
-        </div>
-    );
+      {selected==='general' ? <General/> : <Security/>}
+    </div>
+  );
 }
-export function General() {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [promocode, setPromocode] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
 
-    async function Userdetails() {
-        try {
-            setIsLoading(true);
-            const res = await axios({
-                url: `https://vigyanbackend.onrender.com/user/details?number=${localStorage.getItem('number')}`,
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                },
-                method: 'GET'
-            });
-            if (res.data) {
-                setName(res.data.user.name);
-                setEmail(res.data.user.email);
-                setPromocode(res.data.user.promocode);
-            }
-        } catch (err) {
-            console.error(err);
-            // Using toast notification would be better here
-            alert(err || 'Failed to fetch user details');
-        } finally {
-            setIsLoading(false);
-        }
-    }
+function Left_home(){
+  return (
+    <div className="flex flex-col items-center w-full">  
+      {/* top image */}
+      <div className="w-full md:w-[90%] px-4 md:px-0">
+        <img 
+          src="https://plus.unsplash.com/premium_photo-1683887033239-08a75665a069?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHNjaWVuY2UlMjBhbmQlMjBtYXRoc3xlbnwwfHwwfHx8MA%3D%3D" 
+          className="h-auto md:h-[700px] w-full rounded-lg md:rounded-2xl" 
+          alt="Live-Prep banner" 
+        />
+      </div>
 
-    useEffect(() => {
-        Userdetails();
-    }, []);
+      {/* Why live prep */}
+      <div className="flex flex-col mt-10 md:mt-20 gap-6 md:gap-10 items-center py-5 px-4 md:px-0">
+      
 
-    return (
-        <div className="p-6 sm:p-8 md:p-10 bg-white rounded-xl shadow-sm border border-gray-100 max-w-2xl w-full">
-            <div className="flex items-center justify-between mb-6">
-                <h1 className="font-bold text-2xl sm:text-3xl text-gray-800">General Information</h1>
-                <button 
-                    onClick={Userdetails}
-                    className="flex items-center cursor-pointer gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+        {/* Whys */}
+        <div className="bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl mb-4">
+            Why <span className="text-indigo-600">AVS Classes</span>?
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            The most effective way to accelerate your tech career with industry-relevant skills
+          </p>
+        </div>
+
+        {/* Features Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Feature 1 - Learn from the best */}
+          <div className="bg-white p-8 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+            <div className="flex items-center mb-5">
+              <div className="bg-indigo-100 p-3 rounded-lg mr-4">
+                <svg className="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900">Learn from the best</h3>
+            </div>
+            <p className="text-gray-600 pl-16">
+              We clears the core concepts very easily with real life Examples.
+            </p>
+          </div>
+
+          {/* Feature 2 - Open source */}
+          <div className="bg-white p-8 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+            <div className="flex items-center mb-5">
+              <div className="bg-indigo-100 p-3 rounded-lg mr-4">
+                <svg className="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900">Doubt Sessions</h3>
+            </div>
+            <p className="text-gray-600 pl-16">
+              Solves your every doubt until it not gets demolished.
+            </p>
+          </div>
+
+          {/* Feature 3 - Beginner friendly */}
+          <div className="bg-white p-8 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+            <div className="flex items-center mb-5">
+              <div className="bg-indigo-100 p-3 rounded-lg mr-4">
+                <svg className="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900">Beginner friendly</h3>
+            </div>
+            <p className="text-gray-600 pl-16">
+              Start from the basics and go deep into the concepts with Top notch questions.
+            </p>
+          </div>
+
+          {/* Feature 4 - Version control */}
+          <div className="bg-white p-8 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+            <div className="flex items-center mb-5">
+              <div className="bg-indigo-100 p-3 rounded-lg mr-4">
+                <svg className="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900">Career guidance.</h3>
+            </div>
+            <p className="text-gray-600 pl-16">
+              Helping you sort yourself for the future destinations.
+            </p>
+          </div>
+
+          {/* Feature 5 - Reach your inflection point */}
+          <div className="bg-white p-8 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+            <div className="flex items-center mb-5">
+              <div className="bg-indigo-100 p-3 rounded-lg mr-4">
+                <svg className="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900">Reach your inflection point</h3>
+            </div>
+            <p className="text-gray-600 pl-16">
+              Become a student that tackles each and every question technically.
+            </p>
+          </div>
+
+          {/* Feature 6 - Assignments */}
+          <div className="bg-white p-8 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+            <div className="flex items-center mb-5">
+              <div className="bg-indigo-100 p-3 rounded-lg mr-4">
+                <svg className="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900">Assignments</h3>
+            </div>
+            <p className="text-gray-600 pl-16">
+              We have personally created assignments after every week of study, so it's extremely hands on.
+            </p>
+          </div>
+        </div>
+
+        {/* CTA Section */}
+       
+      </div>
+    </div>
+      </div>
+
+      {/* About Live-prep */}
+      <div className="flex flex-col items-center gap-8 md:gap-12 w-full max-w-6xl px-4 md:px-6 mx-auto py-12">
+  {/* Header */}
+  <div className="text-center">
+    <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+      About <span className="">AVS</span> Classes
+    </h1>
+    <div className="mt-2 h-1 w-20 mx-auto bg-gradient-to-r from-purple-400 to-pink-400 rounded-full"></div>
+  </div>
+
+  {/* Gradient Card */}
+  <div className="w-full relative overflow-hidden rounded-2xl md:rounded-[28px] shadow-xl">
+    {/* Animated gradient background */}
+    <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-pink-300 to-orange-300 opacity-20 animate-gradient-x"></div>
+    
+    {/* Content */}
+    <div className="relative backdrop-blur-sm bg-white/80 p-6 md:p-10 flex flex-col gap-4 md:gap-6">
+      <div className="flex items-center gap-3 mb-2">
+        <div className="h-10 w-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+          </svg>
+        </div>
+        <h2 className="text-xl md:text-2xl font-semibold text-gray-800">Welcome to अष्टावक्र विज्ञान संस्था</h2>
+      </div>
+      
+      <p className="text-gray-700 leading-relaxed">
+        This is an initiative to mentor students in their core subjects like Maths and Science.
+      </p>
+      
+      <p className="text-gray-700 leading-relaxed">
+        Aman strongly believes that today you are either a 1x student or a 100x student with nothing in between. His mission is to elevate every student in the class to become a <span className="font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">100x achiever</span>.
+      </p>
+      
+      <p className="text-gray-700 leading-relaxed">
+        Join him in this transformative journey through his first course on Maths and Science, with a strong emphasis on mastering core concepts to make learning both effective and enjoyable.
+      </p>
+      
+      {/* CTA Button */}
+     
+    </div>
+  </div>
+</div>
+    </div>
+  );
+}
+
+function Courses() {
+  // Get current date
+  const currentDate = new Date();
+  const currentDay = currentDate.getDate();
+  const currentMonth = currentDate.getMonth() + 1; // Months are 0-indexed
+
+  // Check if current date is between March 31 - April 10
+  const showOffer = 
+    (currentMonth === 3 && currentDay === 31) || // March 31st
+    (currentMonth === 4 && currentDay <= 10);    // April 1-10
+
+  // Calculate days remaining in offer
+  let daysRemaining = 0;
+  if (currentMonth === 3 && currentDay === 31) {
+    daysRemaining = 11; // March 31 = 11 days left (including April 10)
+  } else if (currentMonth === 4) {
+    daysRemaining = 11 - currentDay; // April 1 = 10 days left, etc.
+  }
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      {/* Attractive Offer Banner  */}
+      {showOffer && (
+        <div className="bg-gradient-to-r md:mt-0 mt-18 from-purple-600 to-indigo-600 rounded-xl shadow-lg p-4 mb-12 transform hover:scale-[1.01] transition-transform duration-300">
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-white text-lg sm:text-xl font-bold mb-2">
+              🎉 LIMITED TIME OFFER! 🎉
+            </p>
+            <p className="text-purple-100 text-sm sm:text-base">
+              Enroll between <span className="font-bold">April 1st - April 10th</span> and get 
+              <span className="line-through text-purple-200 mx-1">₹7,200</span> 
+              <span className="bg-white text-purple-600 font-bold px-2 py-1 rounded-md ml-1">₹6,500</span> 
+              - Save ₹700! Don't miss this opportunity!
+            </p>
+            <div className="mt-3 flex justify-center">
+              <div className="bg-yellow-400 text-purple-900 text-xs font-bold px-3 py-1 rounded-full animate-pulse">
+                {daysRemaining > 1 ? `OFFER ENDS IN ${daysRemaining} DAYS` : 'LAST DAY TODAY!'}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+      {/* Course Card class 9th */}
+
+
+   {localStorage.getItem('token') ? localStorage.getItem('class')==='9' ?
+      //{/* Course Card class 9th */}
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-xl">
+          {/* Image with overlay */}
+          <div className="relative">
+            <img 
+              className="w-full h-64 sm:h-96 object-cover" 
+              src="https://media.istockphoto.com/id/611751296/photo/stem-concept-with-drawing-background-magnifying-glass-over-education-background.webp?a=1&b=1&s=612x612&w=0&k=20&c=9XhJbkAGJwFVjF01TkJoNq5fGc7UqtdfIAC7vtzVEVU=" 
+              alt="STEM Education Course" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-6 left-6">
+              <h2 className="text-white text-2xl sm:text-3xl font-bold">Advanced STEM Education Class 9th.</h2>
+              <p className="text-gray-200 mt-1">Master the fundamentals of Science & Math</p>
+            </div>
+          </div>
+          
+          {/* Card Content */}
+          <div className="p-6 sm:p-8">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800">Course Highlights</h3>
+                <ul className="mt-3 space-y-2 text-gray-600">
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    Refresh
-                </button>
+                    Special Doubt Sessions.
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Core Concept Clarity.
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Weekly Tests .
+                  </li>
+                </ul>
+              </div>
+              <div className="text-right">
+                {showOffer && <div><p className="text-sm text-gray-500">Regular Price</p>
+                <p className="text-gray-400 line-through">₹7,200</p>
+                <p className="text-sm text-gray-500 mt-2">Discounted Price</p></div>}
+                
+                {!showOffer && <p className="text-sm text-right text-gray-500">Price</p>}
+                <p className="text-2xl font-bold text-purple-600">{showOffer ? '₹6,500':'₹7,200'}</p>
+              </div>
             </div>
             
-            {isLoading ? (
-                <div className="space-y-6">
-                    {[1, 2, 3, 4].map((i) => (
-                        <div key={i} className="animate-pulse">
-                            <div className="h-4 w-24 bg-gray-200 rounded mb-3"></div>
-                            <div className="h-12 bg-gray-100 rounded-lg"></div>
-                        </div>
-                    ))}
-                </div>
-            ) : (
-                <div className="space-y-5 sm:space-y-6">
-                    <div className="space-y-1">
-                        <label className="block text-sm font-medium text-gray-700">
-                            Full name <span className="text-red-500">*</span>
-                        </label>
-                        <div className="relative">
-                            <input 
-                                type="text" 
-                                value={name} 
-                                disabled 
-                                className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-1 focus:ring-indigo-100 focus:border-indigo-300 disabled:opacity-75 disabled:cursor-not-allowed" 
-                            />
-                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="space-y-1">
-                        <label className="block text-sm font-medium text-gray-700">
-                            Promo code <span className="text-red-500">*</span>
-                        </label>
-                        <div className="relative">
-                            <input 
-                                type="text" 
-                                value={promocode} 
-                                disabled 
-                                className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-1 focus:ring-indigo-100 focus:border-indigo-300 disabled:opacity-75 disabled:cursor-not-allowed" 
-                            />
-                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="space-y-1">
-                        <label className="block text-sm font-medium text-gray-700">
-                            Email Address <span className="text-red-500">*</span>
-                        </label>
-                        <div className="relative">
-                            <input 
-                                type="text" 
-                                value={email} 
-                                disabled 
-                                className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-1 focus:ring-indigo-100 focus:border-indigo-300 disabled:opacity-75 disabled:cursor-not-allowed" 
-                            />
-                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="space-y-1">
-                        <label className="block text-sm font-medium text-gray-700">
-                            Phone number <span className="text-red-500">*</span>
-                        </label>
-                        <div className="relative">
-                            <input 
-                                type="text" 
-                                value={localStorage.getItem('number') || ""} 
-                                disabled 
-                                className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-1 focus:ring-indigo-100 focus:border-indigo-300 disabled:opacity-75 disabled:cursor-not-allowed" 
-                            />
-                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {/* CTA Button */}
+            <div className="mt-8 text-center">
+              <button 
+                onClick={() => window.location.href = '/courses/12'}
+                className="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full group shadow-lg hover:shadow-purple-500/30 cursor-pointer hover:scale-[1.1] transition-all duration-300"
+              >
+               View Details
+              </button>
+            </div>
+          </div>
         </div>
-    );
-}
-type PasswordFields = 'old' | 'new' | 'confirm';
+      </div> :
 
-export function Security() {
-    const [old, setOld] = useState('');
-    const [newpass, setNewpass] = useState('');
-    const [confirm, setConfirm] = useState('');
-    const [msg, setMsg] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [showPassword, setShowPassword] = useState({
-        old: false,
-        new: false,
-        confirm: false
-    });
-
-    async function Changepassword() {
-        setLoading(true);
-        setMsg('');
-        try {
-            const find = await axios({
-                url: `https://vigyanbackend.onrender.com/user/details?number=${localStorage.getItem('number')}`,
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-
-            if (find.data) {
-                if (find.data.user.password != old) {
-                    setMsg("Old password doesn't match!");
-                    setLoading(false);
-                    return;
-                } else if (newpass != confirm) {
-                    setMsg("New password and confirmation don't match!");
-                    setLoading(false);
-                    return;
-                } else if (newpass.length < 6) {
-                    setMsg("Password must be at least 6 characters");
-                    setLoading(false);
-                    return;
-                } else {
-                    try {
-                        const changepassword = await axios({
-                            url: 'https://vigyanbackend.onrender.com/user/changepassword',
-                            data: { number: localStorage.getItem('number'), newpass: confirm },
-                            method: 'PUT',
-                            headers: {
-                                Authorization: `Bearer ${localStorage.getItem('token')}`
-                            }
-                        });
-
-                        if (changepassword.data) {
-                            setMsg("Password changed successfully!");
-                            setOld('');
-                            setNewpass('');
-                            setConfirm('');
-                        }
-                    } catch (err) {
-                        console.error(err);
-                        setMsg("Error changing password. Please try again.");
-                    }
-                }
-            }
-        } catch (err) {
-            console.error(err);
-            setMsg("Error verifying current password");
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    const togglePasswordVisibility = (field:PasswordFields) => {
-        setShowPassword(prev => ({ ...prev, [field]: !prev[field] }));
-    };
-
-    return (
-        <div className="p-6 sm:p-8 bg-white rounded-xl shadow-sm border border-gray-100 max-w-2xl w-full">
-            <div className="mb-8">
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">Change Password</h1>
-                <p className="text-gray-500">Secure your account with a new password</p>
+      //{/* Course Card class 10th */}
+      <div className="max-w-4xl mx-auto mt-32">
+        <div className="bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-xl">
+          {/* Image with overlay */}
+          <div className="relative">
+            <img 
+              className="w-full h-64 sm:h-96 object-cover" 
+              src="https://media.istockphoto.com/id/611751296/photo/stem-concept-with-drawing-background-magnifying-glass-over-education-background.webp?a=1&b=1&s=612x612&w=0&k=20&c=9XhJbkAGJwFVjF01TkJoNq5fGc7UqtdfIAC7vtzVEVU=" 
+              alt="STEM Education Course" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-6 left-6">
+              <h2 className="text-white text-2xl sm:text-3xl font-bold">Advanced STEM Education Class 10th.</h2>
+              <p className="text-gray-200 mt-1">Master the fundamentals of Science & Math</p>
+            </div>
+          </div>
+          
+          {/* Card Content */}
+          <div className="p-6 sm:p-8">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800">Course Highlights</h3>
+                <ul className="mt-3 space-y-2 text-gray-600">
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Special Doubt Sessions.
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Core Concept Clarity.
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Weekly Tests .
+                  </li>
+                </ul>
+              </div>
+              <div className="text-right">
+                {showOffer && <div><p className="text-sm text-gray-500">Regular Price</p>
+                <p className="text-gray-400 line-through">₹7,200</p>
+                <p className="text-sm text-gray-500 mt-2">Discounted Price</p></div>}
+                
+                {!showOffer && <p className="text-sm text-right text-gray-500">Price</p>}
+                <p className="text-2xl font-bold text-purple-600">{showOffer ? '₹6,500':'₹7,200'}</p>
+              </div>
             </div>
             
-            <div className="space-y-6">
-                {/* Current Password */}
-                <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                        Current Password <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative">
-                        <input 
-                            onChange={(e) => setOld(e.target.value)} 
-                            type={showPassword.old ? "text" : "password"} 
-                            value={old}
-                            placeholder="Enter current password" 
-                            className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-100 focus:border-indigo-300 transition-all" 
-                        />
-                        <button 
-                            type="button" 
-                            onClick={() => togglePasswordVisibility('old')}
-                            className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                {showPassword.old ? (
-                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                ) : (
-                                    <path fillRule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clipRule="evenodd" />
-                                )}
-                                <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                {/* New Password */}
-                <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                        New Password <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative">
-                        <input 
-                            type={showPassword.new ? "text" : "password"} 
-                            onChange={(e) => setNewpass(e.target.value)} 
-                            value={newpass}
-                            placeholder="Enter new password (min 6 characters)" 
-                            className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-100 focus:border-indigo-300 transition-all" 
-                        />
-                        <button 
-                            type="button" 
-                            onClick={() => togglePasswordVisibility('new')}
-                            className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                {showPassword.new ? (
-                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                ) : (
-                                    <path fillRule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clipRule="evenodd" />
-                                )}
-                                <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                {/* Confirm Password */}
-                <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                        Confirm Password <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative">
-                        <input 
-                            type={showPassword.confirm ? "text" : "password"} 
-                            onChange={(e) => setConfirm(e.target.value)} 
-                            value={confirm}
-                            placeholder="Confirm new password" 
-                            className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-100 focus:border-indigo-300 transition-all" 
-                        />
-                        <button 
-                            type="button" 
-                            onClick={() => togglePasswordVisibility('confirm')}
-                            className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                {showPassword.confirm ? (
-                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                ) : (
-                                    <path fillRule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clipRule="evenodd" />
-                                )}
-                                <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                {/* Message and Submit */}
-                <div className="pt-2">
-                    {msg && (
-                        <div className={`p-3 rounded-lg mb-4 text-sm font-medium ${
-                            msg.includes('success') ? 
-                                'bg-green-50 text-green-700' : 
-                                'bg-red-50 text-red-700'
-                        }`}>
-                            {msg}
-                        </div>
-                    )}
-                    
-                    <button 
-                        onClick={Changepassword}
-                        disabled={loading || !old || !newpass || !confirm}
-                        className={`w-full px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-white font-medium transition-all duration-200 flex items-center justify-center ${
-                            loading ? 'opacity-80 cursor-not-allowed' : ''
-                        } ${
-                            (!old || !newpass || !confirm) ? 'opacity-50 cursor-not-allowed' : ''
-                        }`}
-                    >
-                        {loading ? (
-                            <>
-                                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                Updating...
-                            </>
-                        ) : (
-                            'Change Password'
-                        )}
-                    </button>
-                </div>
+            {/* CTA Button */}
+            <div className="mt-8 text-center">
+              <button 
+                onClick={() => window.location.href = '/courses/12'}
+                className="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full group shadow-lg hover:shadow-purple-500/30 cursor-pointer hover:scale-[1.1] transition-all duration-300"
+              >
+               View Details
+              </button>
             </div>
+          </div>
         </div>
-    );
+      </div>:
+
+      // other wise
+
+
+      <div>
+        //{/* Course Card class 9th */}
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-xl">
+          {/* Image with overlay */}
+          <div className="relative">
+            <img 
+              className="w-full h-64 sm:h-96 object-cover" 
+              src="https://media.istockphoto.com/id/611751296/photo/stem-concept-with-drawing-background-magnifying-glass-over-education-background.webp?a=1&b=1&s=612x612&w=0&k=20&c=9XhJbkAGJwFVjF01TkJoNq5fGc7UqtdfIAC7vtzVEVU=" 
+              alt="STEM Education Course" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-6 left-6">
+              <h2 className="text-white text-2xl sm:text-3xl font-bold">Advanced STEM Education Class 9th.</h2>
+              <p className="text-gray-200 mt-1">Master the fundamentals of Science & Math</p>
+            </div>
+          </div>
+          
+          {/* Card Content */}
+          <div className="p-6 sm:p-8">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800">Course Highlights</h3>
+                <ul className="mt-3 space-y-2 text-gray-600">
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Special Doubt Sessions.
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Core Concept Clarity.
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Weekly Tests .
+                  </li>
+                </ul>
+              </div>
+              <div className="text-right">
+                {showOffer && <div><p className="text-sm text-gray-500">Regular Price</p>
+                <p className="text-gray-400 line-through">₹7,200</p>
+                <p className="text-sm text-gray-500 mt-2">Discounted Price</p></div>}
+                
+                {!showOffer && <p className="text-sm text-right text-gray-500">Price</p>}
+                <p className="text-2xl font-bold text-purple-600">{showOffer ? '₹6,500':'₹7,200'}</p>
+              </div>
+            </div>
+            
+            {/* CTA Button */}
+            <div className="mt-8 text-center">
+              <button 
+                onClick={() => window.location.href = '/courses/12'}
+                className="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full group shadow-lg hover:shadow-purple-500/30 cursor-pointer hover:scale-[1.1] transition-all duration-300"
+              >
+               View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      //{/* Course Card class 10th */}
+      <div className="max-w-4xl mx-auto mt-32">
+        <div className="bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-xl">
+          {/* Image with overlay */}
+          <div className="relative">
+            <img 
+              className="w-full h-64 sm:h-96 object-cover" 
+              src="https://media.istockphoto.com/id/611751296/photo/stem-concept-with-drawing-background-magnifying-glass-over-education-background.webp?a=1&b=1&s=612x612&w=0&k=20&c=9XhJbkAGJwFVjF01TkJoNq5fGc7UqtdfIAC7vtzVEVU=" 
+              alt="STEM Education Course" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-6 left-6">
+              <h2 className="text-white text-2xl sm:text-3xl font-bold">Advanced STEM Education Class 10th.</h2>
+              <p className="text-gray-200 mt-1">Master the fundamentals of Science & Math</p>
+            </div>
+          </div>
+          
+          {/* Card Content */}
+          <div className="p-6 sm:p-8">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800">Course Highlights</h3>
+                <ul className="mt-3 space-y-2 text-gray-600">
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Special Doubt Sessions.
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Core Concept Clarity.
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Weekly Tests .
+                  </li>
+                </ul>
+              </div>
+              <div className="text-right">
+                {showOffer && <div><p className="text-sm text-gray-500">Regular Price</p>
+                <p className="text-gray-400 line-through">₹7,200</p>
+                <p className="text-sm text-gray-500 mt-2">Discounted Price</p></div>}
+                
+                {!showOffer && <p className="text-sm text-right text-gray-500">Price</p>}
+                <p className="text-2xl font-bold text-purple-600">{showOffer ? '₹6,500':'₹7,200'}</p>
+              </div>
+            </div>
+            
+            {/* CTA Button */}
+            <div className="mt-8 text-center">
+              <button 
+                onClick={() => window.location.href = '/courses/12'}
+                className="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full group shadow-lg hover:shadow-purple-500/30 cursor-pointer hover:scale-[1.1] transition-all duration-300"
+              >
+               View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      </div>
+      }
+
+
+      
+      
+
+      
+      
+    </div>
+  );
 }
+
+// function Card_course({image, heading, para, curprice, oldprice}: any){
+//   return (
+//     <div className="w-full max-w-sm mx-auto sm:max-w-none sm:w-auto h-auto sm:h-[450px] rounded-xl md:rounded-2xl border border-slate-500 overflow-hidden">
+//       <div className="h-40 sm:h-[40%]">
+//         <img 
+//           src={image} 
+//           className="h-full w-full object-cover rounded-tl-xl md:rounded-tl-2xl rounded-tr-xl md:rounded-tr-2xl" 
+//           alt="course thumbnail" 
+//         />
+//       </div>
+
+//       <div className="h-auto sm:h-[60%] flex flex-col gap-3 md:gap-5 p-3 md:p-4 md:py-6">
+//         <h1 className="font-bold text-base md:text-lg line-clamp-2">{heading}</h1>
+//         <p className="text-slate-500 text-sm md:text-base line-clamp-2">{para}</p>
+        
+//         <div className="flex justify-between mt-2 md:mt-0">
+//           <span className="font-bold text-sm md:text-base">
+//             {curprice} <span className="line-through font-normal text-slate-400 text-xs md:text-sm">{oldprice}</span>
+//           </span>
+//           <span className="text-green-500 font-bold text-sm md:text-base">30% off</span>
+//         </div>
+
+//         <div className="flex justify-center mt-2 md:mt-0">
+//           <button 
+//             onClick={()=> window.location.href = `/courses/${12}`}
+//             className="bg-blue-500 rounded-full cursor-pointer text-white hover:bg-blue-600 w-full md:w-[80%] py-1 md:py-2 text-sm md:text-base"
+//           >
+//             View details
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
