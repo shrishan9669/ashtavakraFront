@@ -197,6 +197,7 @@ export default function Header({ onSignupclick, onLoginclick, setSidebar }: any)
                 Login
               </button>
               <button 
+              id="headerSignup"
                 onClick={onSignupclick}
                 className="bg-gradient-to-r from-blue-600 to-blue-400 text-white px-5 py-2 rounded-lg font-medium transition-all signup-btn menu-item"
               >
@@ -228,7 +229,7 @@ export default function Header({ onSignupclick, onLoginclick, setSidebar }: any)
       
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="absolute top-16 right-6  z-50 bg-white shadow-xl rounded-xl p-4 flex flex-col items-center space-y-1 md:hidden border  border-gray-100 w-64 mobile-menu">
+        <div className="absolute top-16 right-6 z-50 bg-white shadow-xl rounded-xl p-4 flex flex-col items-center space-y-1 md:hidden border  border-gray-100 w-64 mobile-menu">
           {navLinks.map((link) => (
             <a
               key={link.name}
@@ -254,6 +255,7 @@ export default function Header({ onSignupclick, onLoginclick, setSidebar }: any)
                 Login
               </button>
               <button 
+              id="headerSignup"
                 onClick={() => {
                   onSignupclick();
                   setMenuOpen(false);
