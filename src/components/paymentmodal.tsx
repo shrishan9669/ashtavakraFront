@@ -7,6 +7,7 @@ export default function PaymentModal({ isOpen, onClose, installment }: any) {
   const [codeAllow, setCodeAllow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [applied, setApplied] = useState(false);
+  const [msg,setMsg] = useState('')
 
   // Date logic ..early discount
   const currentDate = new Date();
@@ -30,14 +31,20 @@ export default function PaymentModal({ isOpen, onClose, installment }: any) {
     
     setLoading(true);
     try {
-      const response = await axios.get('https://vigyanbackend.onrender.com/user/checkPromo', {
-        params: { code }
+      const response = await axios.get('http://localhost:3000/user/checkPromo', {
+        params: { code,userid:localStorage.getItem('userid') }
       });
       
       if (response.data?.status) {
         setCodeAllow(true);
         setApplied(true);
       }
+      else {
+        setCodeAllow(false)
+        setMsg("You can't apply your Promo Code!!")
+        setApplied(true);
+      }
+      
     } catch (err) {
       console.error(err);
       setCodeAllow(false);
@@ -143,7 +150,7 @@ export default function PaymentModal({ isOpen, onClose, installment }: any) {
             
             {applied && (
               <p className={`text-sm ${codeAllow ? 'text-green-600' : 'text-red-600'}`}>
-                {codeAllow ? 'Promo code applied successfully!' : 'Invalid promo code'}
+                {codeAllow ? 'Promo code applied successfully!' : (msg ? msg:"Invalid Promo Code.")}
               </p>
             )}
           </div>
