@@ -379,7 +379,7 @@ function Courses() {
 
 
    {localStorage.getItem('token') ? localStorage.getItem('class')==='9' ?
-      {/* Course Card class 9th */}
+      //{/* Course Card class 9th */}
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-xl">
           {/* Image with overlay */}
@@ -435,7 +435,14 @@ function Courses() {
             {/* CTA Button */}
             <div className="mt-8 text-center">
               <button 
-                onClick={() => window.location.href = '/courses/12'}
+
+                onClick={() => {
+                  if(!localStorage.getItem('token')){
+                    document.getElementById('headerLogin')?.click();
+                  }
+                  else window.location.href = '/courses/12'
+                 
+                }}
                 className="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full group shadow-lg hover:shadow-purple-500/30 cursor-pointer hover:scale-[1.1] transition-all duration-300"
               >
                View Details
@@ -445,7 +452,7 @@ function Courses() {
         </div>
       </div> :
 
-      {/* Course Card class 10th */}
+      //{/* Course Card class 10th */}
       <div className="max-w-4xl mx-auto mt-32">
         <div className="bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-xl">
           {/* Image with overlay */}
@@ -515,7 +522,7 @@ function Courses() {
 
 
       <div>
-        //{/* Course Card class 9th */}
+        {/* Course Card class 9th */}
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-xl">
           {/* Image with overlay */}
@@ -581,7 +588,7 @@ function Courses() {
         </div>
       </div>
 
-      //{/* Course Card class 10th */}
+      {/* Course Card class 10th */}
       <div className="max-w-4xl mx-auto mt-32">
         <div className="bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-xl">
           {/* Image with overlay */}
