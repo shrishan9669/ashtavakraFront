@@ -1,31 +1,83 @@
 import axios from 'axios';
-import { EyeIcon, EyeOffIcon } from 'lucide-react';
+import { ArrowRightIcon, EyeIcon, EyeOffIcon, PhoneIcon } from 'lucide-react';
 import  {useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import Loader from './loader';
+import { HiXMark } from 'react-icons/hi2';
 
 
 function UserOrTeacherSignup({setUserteacher,onClose,isOpen}:any){
   if(!isOpen) return null;
   return (
-    <div className='fixed inset-0 flex items-center justify-center backdrop-blur-xs  z-50 transition-opacity duration-300 ease-in-out'>
-     
-        <div className='bg-white flex flex-col gap-6 p-8 rounded-2xl border border-gray-300 shadow-xl relative w-full max-w-md'>
-        <div className='flex items-center justify-between'>
-                  <h2 className="text-xl  font-bold ">Sign Up as a Student.</h2>
-              <button
-                  onClick={onClose}
-                  className="text-3xl cursor-pointer font-bold text-gray-600 hover:text-black"
-              >
-                  &times;
-              </button>
-              </div>
-          
-
-          <button onClick={()=> setUserteacher('student')} className='w-full rounded-full py-2 text-white bg-blue-500 hover:bg-blue-600 cursor-pointer'>Signup as Student</button>
-          <button onClick={()=> setUserteacher('teacher')} className='w-full py-2 rounded-full text-white bg-blue-500 hover:bg-blue-600 cursor-pointer'>Signup as Teacher</button>
+    <div className='fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 bg-black/30 backdrop-blur-sm'>
+    <div className='relative w-full max-w-md mx-4'>
+      <div className='bg-white p-8 rounded-2xl shadow-2xl border border-gray-100 animate-fade-in-up'>
+        {/* Header */}
+        <div className='flex items-center justify-between mb-6'>
+          <h2 className="text-2xl font-bold text-gray-800">Join As</h2>
+          <button
+            onClick={onClose}
+            className="p-1 text-gray-400 transition-colors rounded-full hover:bg-gray-100 hover:text-gray-600"
+            aria-label="Close modal"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
+
+        {/* Content */}
+        <div className='space-y-4'>
+          <div className='space-y-1'>
+            <h3 className='text-lg font-medium text-gray-700'>I want to...</h3>
+            <p className='text-sm text-gray-500'>Select your role to continue registration</p>
+          </div>
+
+          <div className='flex flex-col gap-3'>
+            <button 
+              onClick={() => setUserteacher('student')} 
+              className='flex items-center justify-between px-6 py-4 transition-all duration-200 bg-white border border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-md group'
+            >
+              <div className='flex items-center gap-4'>
+                <div className='p-3 rounded-lg bg-blue-50 text-blue-600 group-hover:bg-blue-100'>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                </div>
+                <div className='text-left'>
+                  <h4 className='font-medium text-gray-800'>Learn</h4>
+                  <p className='text-sm text-gray-500'>Sign up as Student</p>
+                </div>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            <button 
+              onClick={() => setUserteacher('teacher')} 
+              className='flex items-center justify-between px-6 py-4 transition-all duration-200 bg-white border border-gray-200 rounded-xl hover:border-blue-400 hover:shadow-md group'
+            >
+              <div className='flex items-center gap-4'>
+                <div className='p-3 rounded-lg bg-indigo-50 text-indigo-600 group-hover:bg-indigo-100'>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                </div>
+                <div className='text-left'>
+                  <h4 className='font-medium text-gray-800'>Teach</h4>
+                  <p className='text-sm text-gray-500'>Sign up as Teacher</p>
+                </div>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
   )
 }
 export const SignupModal = ({isOpen,onClose}:any) => {
@@ -71,158 +123,160 @@ export const SignupModal = ({isOpen,onClose}:any) => {
     return (
       <div>
         {
-          userteacher === 'student' ? <div className="fixed inset-0 flex items-center justify-center backdrop-blur-xs  z-50 transition-opacity duration-300 ease-in-out">
-        
-          <div className="bg-white flex flex-col gap-6 p-8 rounded-2xl border border-gray-300 shadow-xl relative w-full max-w-md">
-              <div className='flex items-center justify-between'>
-                  <h2 className="text-xl  font-bold ">Sign Up as a Student.</h2>
-              <button
-              id='close'
-                  onClick={onClose}
-                  className="text-3xl cursor-pointer font-bold text-gray-600 hover:text-black"
-              >
-                  &times;
-              </button>
+          userteacher === 'student' ? <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm  bg-opacity-30 z-50 transition-opacity duration-300 ease-in-out">
+          <div className="bg-white flex flex-col gap-6 p-8 rounded-xl border border-gray-200 shadow-2xl relative w-full max-w-md mx-4">
+            <div className='flex items-center justify-between'>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800">Student Sign Up</h2>
+                <p className="text-sm text-gray-500 mt-1">Join our learning community</p>
               </div>
-         
-  
-            {/* Signup logic */}
-            <form>
-          <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-2" htmlFor="name">
-                Name
-              </label>
-              <input
-              onChange={(e)=> setName(e.target.value)}
-                id="name"
-                type="text"
-                placeholder="Enter your fullname.."
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-            {/* class */}
-            <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-2" htmlFor="class">
-                Class:
-              </label>
-              <input
-              onChange={(e)=> setClass(e.target.value)}
-                id="class"
-                type="number"
-                placeholder="Enter your class 9th or 10th.."
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-2" htmlFor="email">
-                Email
-              </label>
-              <input
-                 onChange={handleEmailchange}
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-              {emailmsg && <p className='text-red-400'>{emailmsg}</p>}
-  
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-2" htmlFor="number">
-                Phone no.
-              </label>
-              <input
-                 onChange={handleInputChange}
-                id="number"
-                type="text"
-                placeholder="Enter your email"
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-              {error && <p className='text-red-400'>{error}</p>}
-            </div>
-            <div className="mb-4 relative">
-              <label className="block text-gray-700 font-medium mb-2" htmlFor="password">
-                Password
-              </label>
-              
-              <input
-                 onChange={(e)=> setPassword(e.target.value)}
-                id="password"
-                type={passwordVisible ? 'text' : 'password'}
-                placeholder="Enter your password"
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
               <button
-                type="button"
-                onClick={() => setPasswordVisible(!passwordVisible)}
-                className="absolute top-12 right-3 text-gray-600"
+                id='close'
+                onClick={onClose}
+                className="text-gray-500 hover:text-gray-700 transition-colors duration-200 text-2xl font-light"
               >
-                {passwordVisible ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
+                &times;
               </button>
             </div>
-  
-            <button
-  
-            onClick={async(e)=>{
-              e.preventDefault()
-              if (!phoneNumberRegex.test(phone)) {
-                  setError('Please enter a valid phone number.');
-                  return;
-              } 
-              if(!regexemail.test(email)){
-                  setEmailmsg('Invalid Gmail address')
-                  return;
-              }
-              if(!name || !password || !email || !phone){
-                alert("All fields are required!!");
-                return ;
-              }
-               
-              setLoading(true)
-              try{
-                  const res = await axios({
-                      url:"https://vigyanbackend.onrender.com/user/createuser",
-                      method:"POST",
-                      data:{
-                        email,password,name,number:phone,role:"student",Class:Class
+        
+            <form className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="name">
+                  Full Name
+                </label>
+                <input
+                  onChange={(e) => setName(e.target.value)}
+                  id="name"
+                  type="text"
+                  placeholder="John Doe"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  required
+                />
+              </div>
+        
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="class">
+                  Class
+                </label>
+                <input
+                  onChange={(e) => setClass(e.target.value)}
+                  id="class"
+                  type="number"
+                  placeholder="9 or 10"
+                  min="9"
+                  max="12"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  required
+                />
+              </div>
+        
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">
+                  Email Address
+                </label>
+                <input
+                  onChange={handleEmailchange}
+                  id="email"
+                  type="email"
+                  placeholder="yourname@gmail.com"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  required
+                />
+                {emailmsg && <p className='mt-1 text-sm text-red-500'>{emailmsg}</p>}
+              </div>
+        
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="number">
+                  Phone Number
+                </label>
+                <input
+                  onChange={handleInputChange}
+                  id="number"
+                  type="text"
+                  placeholder="9876543210"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  required
+                />
+                {error && <p className='mt-1 text-sm text-red-500'>{error}</p>}
+              </div>
+        
+              <div className="relative">
+                <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="password">
+                  Password
+                </label>
+                <input
+                  onChange={(e) => setPassword(e.target.value)}
+                  id="password"
+                  type={passwordVisible ? 'text' : 'password'}
+                  placeholder="••••••••"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-10"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                  className="absolute right-3 top-9 text-gray-500 hover:text-gray-700 transition-colors"
+                  aria-label={passwordVisible ? "Hide password" : "Show password"}
+                >
+                  {passwordVisible ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
+                </button>
+              </div>
+        
+              <button
+                onClick={async (e) => {
+                  e.preventDefault()
+                  if (!phoneNumberRegex.test(phone)) {
+                    setError('Please enter a valid phone number.');
+                    return;
+                  }
+                  if (!regexemail.test(email)) {
+                    setEmailmsg('Invalid Gmail address')
+                    return;
+                  }
+                  if (!name || !password || !email || !phone) {
+                    alert("All fields are required!!");
+                    return;
+                  }
+        
+                  setLoading(true)
+                  try {
+                    const res = await axios({
+                      url: "https://vigyanbackend.onrender.com/user/createuser",
+                      method: "POST",
+                      data: {
+                        email, password, name, number: phone, role: "student", Class: Class
                       }
-                     })
-    
-                     console.log(res.data)
-                     if(res.data && res.data.newUser){
+                    })
+        
+                    console.log(res.data)
+                    if (res.data && res.data.newUser) {
                       setMsg(res.data.msg)
                       onClose();
                       document.getElementById('headerLogin')?.click()
-                      
-                     }
-                     else setMsg(res.data.msg)
-                     
-              }
-              catch(err){
-                  console.log(err);
-                  alert(err)
-              }
-              finally{
-                setLoading(false)
-              }
-                   
-            }}
-              type="submit"
-              className="w-full bg-blue-600 text-white cursor-pointer transition-all duration-300 p-3 rounded-lg hover:bg-blue-700 "
-            >
-              {loading ? <Loader/>:'Sign up'}
-            </button>
-            <div className='flex justify-center'><span className='text-green-400'>{msg}</span>
-            </div>
-            
-          </form>
-            
+                    }
+                    else setMsg(res.data.msg)
+                  }
+                  catch (err) {
+                    console.log(err);
+                    alert(err)
+                  }
+                  finally {
+                    setLoading(false)
+                  }
+                }}
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 flex items-center justify-center"
+              >
+                {loading ? <Loader /> : 'Create Account'}
+              </button>
+        
+              {msg && (
+                <div className={`text-center py-2 px-4 rounded-lg ${msg.includes('success') ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
+                  <span className="text-sm">{msg}</span>
+                </div>
+              )}
+            </form>
           </div>
         </div>
         
@@ -374,164 +428,209 @@ export const SignupModal = ({isOpen,onClose}:any) => {
 }
 
 
-export const MobileNumberModal = ({onClose,isOpen}:any)=>{
+export const MobileNumberModal = ({ onClose, isOpen }: any) => {
   if (!isOpen) return null;
-  const [next,setNext] = useState(false);
-  const [number,SetNumber] = useState('')
-  const[msg,setMsg] = useState('')
-  const [loading,setLoading] = useState(false)
+  
+  const [next, setNext] = useState(false);
+  const [number, setNumber] = useState('');
+  const [msg, setMsg] = useState('');
+  const [loading, setLoading] = useState(false);
   const phoneNumberRegex = /^[7-9]{1}[0-9]{9}$/;
-  function handlenumberchange(e:any){
-          SetNumber(e.target.value)
-             console.log(e.target.value)
-          if(!phoneNumberRegex.test(e.target.value)){
-            setMsg('Invalid mobile number format!!')
-          }
-          else setMsg('')
-  }
-     return (
-      // Conditional Rendering.
-      <div id='login'>
-        {next ? <Aftermobile onClose={onClose} isOpen={isOpen}/>
-        
-        :
-        
-        <div className='fixed inset-0 flex items-center  justify-center backdrop-blur-xs bg-opacity-60 z-50 transition-opacity duration-300 ease-in-out'>
-        <div className='bg-white flex flex-col  gap-6 p-8 rounded-2xl shadow-2xl border border-gray-300 relative w-full max-w-md'>
- {/* heading and cross button */}
- <div className='flex justify-between items-center '>
-            <h1 className='font-bold text-lg'>Enter your phone number for Login.</h1>
-            <button
+
+  const handlenumberchange = (e: any) => {
+    const value = e.target.value;
+    setNumber(value);
+    
+    if (!phoneNumberRegex.test(value)) {
+      setMsg('Please enter a valid 10-digit mobile number');
+    } else {
+      setMsg('');
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!phoneNumberRegex.test(number)) {
+      setMsg('Please enter a valid mobile number');
+      return;
+    }
+    
+    setLoading(true);
+    try {
+      const user = await axios({
+        url: "https://vigyanbackend.onrender.com/user/checknumber",
+        data: { number },
+        method: 'POST'
+      });
+
+      if (user.data?.status) {
+        localStorage.setItem('number', number);
+        localStorage.setItem('role', user.data.role);
+        setNext(true);
+      } else {
+        setMsg('Mobile number not registered');
+      }
+    } catch (err) {
+      console.error(err);
+      setMsg('An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div id='login'>
+      {next ? (
+        <Aftermobile onClose={onClose} isOpen={isOpen} />
+      ) : (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 overflow-hidden border border-gray-100">
+            {/* Header */}
+            <div className="flex justify-between items-center p-6 border-b border-gray-100">
+              <h1 className="text-xl font-semibold text-gray-800">Login with Mobile</h1>
+              <button
                 onClick={onClose}
-                className="text-3xl cursor-pointer font-bold text-gray-600 hover:text-black"
-            >
-                &times;
-            </button>
-          </div>
+                className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100"
+              >
+                <HiXMark className="h-5 w-5" />
+              </button>
+            </div>
 
-          <div className='flex flex-col gap-3'>
-            <label htmlFor="mobile">Phone number:</label>
-            <input onChange={handlenumberchange} type="text" placeholder='Enter your phone number' className='w-full rounded-full bg-slate-200 outline-0 border border-slate-500 p-3' />
-            {msg && <p className='text-red-300 ml-3'>{msg}</p>}
-          </div>
+            {/* Body */}
+            <div className="p-6 space-y-6">
+              <div className="space-y-2">
+                <label htmlFor="mobile" className="block text-sm font-medium text-gray-700">
+                  Mobile Number
+                </label>
+                <div className="relative">
+                  <input
+                    id="mobile"
+                    type="tel"
+                    value={number}
+                    onChange={handlenumberchange}
+                    placeholder="Enter 10-digit mobile number"
+                    className="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400"
+                    maxLength={10}
+                  />
+                  <PhoneIcon className="absolute right-3 top-3.5 h-4 w-4 text-gray-400" />
+                </div>
+                {msg && (
+                  <p className={`text-sm mt-1 ${msg.includes('valid') ? 'text-amber-500' : 'text-red-500'}`}>
+                    {msg}
+                  </p>
+                )}
+              </div>
 
-          
+              <button
+                onClick={handleSubmit}
+                disabled={loading || !phoneNumberRegex.test(number)}
+                className={`w-full py-3 px-4 rounded-lg text-white font-medium transition-all flex items-center justify-center gap-2
+                  ${loading || !phoneNumberRegex.test(number) 
+                    ? 'bg-blue-400 cursor-not-allowed' 
+                    : 'bg-blue-600 hover:bg-blue-700 shadow-sm hover:shadow-md'}`}
+              >
+                {loading ? (
+                  <>
+                    {/* <Arrowpathi clas
+                    <sName="h-4 w-4 animate-spin" />
+                    Verifying... */}
+                    <Loader/>
+                  </>
+                ) : (
+                  <>
+                    <ArrowRightIcon className="h-4 w-4" />
+                    Continue
+                  </>
+                )}
+              </button>
+            </div>
 
-          <div className='flex justify-center'>
-            <button onClick={async()=>{
-              if(!phoneNumberRegex.test(number)){
-                return ;
-              }
-                
-              setLoading(true)
-                try{
-                  const user = await axios({
-                    url:"https://vigyanbackend.onrender.com/user/checknumber",
-                    data:{
-                      number
-                    },
-                    method:'POST'
-                  })
-
-                  if(user.data && user.data.status){
-                    localStorage.setItem('number',number)
-                    localStorage.setItem('role',user.data.role)
-                    setNext(true)
-                  }
-                  else setMsg(`Mobile number doesn't exist!!`)
-
-                }
-                catch(err){
-                  console.log(err)
-                  alert(err)
-                }
-                finally{
-                  setLoading(false)
-                }
-            }} className='px-5 py-3 cursor-pointer hover:bg-blue-600 rounded-full text-white bg-blue-500 text-lg'>{loading ? <Loader/>:"Next"}</button>
+            {/* Footer */}
+            <div className="px-6 py-4 bg-gray-50 text-center border-t border-gray-100">
+              <p className="text-xs text-gray-500">
+                By continuing, you agree to our Terms of Service
+              </p>
+            </div>
           </div>
         </div>
-       
-      </div>}
-      </div>
-      
-     )
-}
-function Aftermobile({onClose,isOpen}:any){
-  if(!isOpen) return null;
-  const [withpassword,setWithpassword] = useState(false)
-  // const [withOtp,setWithOtp] = useState(false)
-  // const[loading,setLoading] = useState(false)
-  // // credentials to be send through component
-  // const [token,setToken] = useState('')
-  //  const [userid,setuserId] = useState('');
-
-  return (<div>
-            {withpassword ? <Loginwithpassword onClose={onClose} isOpen={isOpen}/> :<div className='fixed inset-0 flex items-center  justify-center backdrop-blur-xs bg-opacity-60 z-50 transition-opacity duration-300 ease-in-out'>
-    <div className='bg-white flex flex-col  gap-6 p-8 rounded-2xl shadow-2xl border border-gray-300 relative w-full max-w-md'>
-    <div className='flex justify-between items-center '>
-            <h1 className='font-bold text-xl'>Login to your account</h1>
-            <button
-            onClick={onClose}
-               
-                className="text-3xl cursor-pointer font-bold text-gray-600 hover:text-black"
-            >
-                &times;
-            </button>
+      )}
     </div>
-{/* login with password */}
-    <div className='flex justify-center mt-3'>
-      <button
-      onClick={()=> setWithpassword(true)}
-      className='bg-blue-500 p-3 cursor-pointer text-white text-lg hover:bg-blue-600 w-[90%] rounded-full'>Login with password</button>
-    </div>
+  );
+};
+function Aftermobile({ onClose, isOpen }: any) {
+  if (!isOpen) return null;
+  const [withpassword, setWithpassword] = useState(false);
 
-    {/* login with otp
-    <div className='flex justify-center'>
-      <button
-      // Sending Otp
-    
-      onClick={async()=>{
-        setLoading(true)
-         try{
-            const res = await axios({
-              url:'https://vigyanbackend.onrender.com/user/send-otp',
-              data:{
-                phonenumber:localStorage.getItem('number')
-              },
-              method:"POST"
-            })
-            if(res.data && res.data.success){
-              localStorage.setItem('code',res.data.otp)
-              setToken(res.data.token)
-              setuserId(res.data.id);
-              setWithOtp(true)
-            }
-         }
-         catch(err){
-          console.log(err);
-          alert(err)
-         }
-         finally{
-          setLoading(false)
-         }
-      }}
-      className='bg-blue-500 p-3 cursor-pointer  text-white text-lg hover:bg-blue-600 w-[90%] rounded-full'>{loading ? <Loader/>:"Login with otp"}</button>
-    </div> */}
+  return (
+    <div>
+      {withpassword ? (
+        <Loginwithpassword onClose={onClose} isOpen={isOpen} />
+      ) : (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 overflow-hidden border border-gray-100">
+            {/* Header */}
+            <div className="flex justify-between items-center p-6 border-b border-gray-100">
+              <h1 className="text-xl font-semibold text-gray-800">Login Options</h1>
+              <button
+                onClick={onClose}
+                className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100"
+              >
+                 <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    className="w-5 h-5"
+  >
+    <path 
+      fillRule="evenodd" 
+      d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" 
+      clipRule="evenodd" 
+    />
+  </svg>
+                {/* <XMarkIcon className="h-5 w-5" /> */}
+              </button>
+            </div>
 
-    {/* Forget password */}
-    <div className='flex justify-center'>
-      <span className='text-blue-400 underline text-sm'>Forgot Password</span>
-    </div>
-    </div>
+            {/* Body */}
+            <div className="p-6 space-y-4">
+              <div className="space-y-4">
+                <button
+                  onClick={() => setWithpassword(true)}
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all shadow-sm hover:shadow-md"
+                >
+                  
+                  Continue with Password
+                </button>
 
+                
+              </div>
 
+              <div className="pt-2 text-center">
+                <button className="text-sm text-blue-500 hover:text-blue-600 hover:underline transition-colors">
+                  Forgot Password?
+                </button>
+              </div>
+            </div>
 
-  </div>}
+            {/* Footer */}
+            <div className="px-6 py-4 bg-gray-50 text-center border-t border-gray-100">
+              <p className="text-xs text-gray-500">
+                Don't have an account?{' '}
+                <button
+                onClick={()=>{
+                  onClose();
+                  document.getElementById('headerSignup')?.click()
+
+                }}
+                className="text-blue-500 hover:underline">
+                  Sign up
+                </button>
+              </p>
+            </div>
           </div>
-        )
-  
-  
+        </div>
+      )}
+    </div>
+  );
 }
 
 function Loginwithpassword ({onClose,isOpen}:any){
