@@ -379,7 +379,7 @@ function Courses() {
 
 
    {localStorage.getItem('token') ? localStorage.getItem('class')==='9' ?
-      //{/* Course Card class 9th */}
+      {/* Course Card class 9th */}
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-xl">
           {/* Image with overlay */}
@@ -445,7 +445,7 @@ function Courses() {
         </div>
       </div> :
 
-      //{/* Course Card class 10th */}
+      {/* Course Card class 10th */}
       <div className="max-w-4xl mx-auto mt-32">
         <div className="bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:shadow-xl">
           {/* Image with overlay */}
