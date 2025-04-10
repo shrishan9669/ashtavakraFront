@@ -102,7 +102,7 @@ export default function PaymentModal({ isOpen, onClose, installment }: any) {
               />
             </div>
             <p className="text-center text-gray-600 text-sm">
-              Scan the QR code to make payment or use UPI ID: <span className="font-bold">amanshrivastava26266@ybl</span>
+              Scan the QR code to make payment.
             </p>
           </div>
 
