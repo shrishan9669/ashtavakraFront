@@ -199,7 +199,7 @@ function Left_home(){
               <h3 className="text-xl font-semibold text-gray-900">Learn from the best</h3>
             </div>
             <p className="text-gray-600 pl-16">
-              We clears the core concepts very easily with real life Examples.
+              We clear the core concepts very easily with real life Examples.
             </p>
           </div>
 
@@ -316,11 +316,11 @@ function Left_home(){
       </p>
       
       <p className="text-gray-700 leading-relaxed">
-        Aman strongly believes that today you are either a 1x student or a 100x student with nothing in between. His mission is to elevate every student in the class to become a <span className="font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">100x achiever</span>.
+        We strongly believes that today you are either a 1x student or a 100x student with nothing in between. Our mission is to elevate every student in the class to become a <span className="font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">100x achiever</span>.
       </p>
       
       <p className="text-gray-700 leading-relaxed">
-        Join him in this transformative journey through his first course on Maths and Science, with a strong emphasis on mastering core concepts to make learning both effective and enjoyable.
+        Join us in this transformative journey through his first course on Maths and Science, with a strong emphasis on mastering core concepts to make learning both effective and enjoyable.
       </p>
       
       {/* CTA Button */}
