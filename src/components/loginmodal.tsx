@@ -386,7 +386,7 @@ export const SignupModal = ({isOpen,onClose}:any) => {
                       url:"https://vigyanbackend.onrender.com/user/createuser",
                       method:"POST",
                       data:{
-                        email,password,name,number:phone,role:"teacher", Class: Class
+                        email,password,name,number:phone,role:"teacher"
                       }
                      })
     
