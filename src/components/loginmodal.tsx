@@ -681,7 +681,7 @@ function LoginWithPassword({ onClose, isOpen }: { onClose: () => void; isOpen: b
   };
 
   return (
-    <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50 transition-opacity duration-300 ease-in-out'>
+    <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-sm z-50 transition-opacity duration-300 ease-in-out'>
       <div className='bg-white flex flex-col gap-6 p-8 rounded-xl shadow-xl w-full max-w-md mx-4'>
         <div className='flex justify-between items-center'>
           <h1 className='font-bold text-2xl text-gray-800'>Welcome Back</h1>
