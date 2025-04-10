@@ -46,6 +46,7 @@ export default function Course1() {
 
             <div className="flex flex-col gap-4 mt-4">
                 <span className="font-medium">Course Fee with Installments: ₹4250 + ₹4250 = ₹8500/-</span>
+                <span className="font-bold">Note: <span className="font-normal">Second Installment Should be payed on September.</span></span>
                 <span className="font-medium">One-time Payment: ₹7200/-</span>
                 <p className="text-gray-700 leading-relaxed">
                     If you purchase the course with installments, your referral code will only provide a ₹300 discount, 
