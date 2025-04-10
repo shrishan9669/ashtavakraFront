@@ -22,6 +22,10 @@ function App() {
       const isAuthenticated = !!localStorage.getItem('token');
       return isAuthenticated ? children : <Navigate to={'/'} />
     }
+    const AdminRoute = ({children}:{children:JSX.Element}) => {
+      const isAuthenticated = localStorage.getItem('role') === 'teacher';
+      return isAuthenticated ? children : <Navigate to={'/'} />
+    }
  return (
   <BrowserRouter>
   
@@ -34,7 +38,7 @@ function App() {
    
    <Route path="/courses/:id" element={<PrivateRoute><Course1/></PrivateRoute>} />
    <Route path="/profile-page" element={<PrivateRoute><Profilepage /></PrivateRoute>} />
-   <Route path="/admin" element={<PrivateRoute><Admin/></PrivateRoute>}/> 
+   <Route path="/admin" element={<AdminRoute><Admin/></AdminRoute>}/> 
    <Route path="/view" element={<PrivateRoute><View/></PrivateRoute>}/> 
    
    <Route path="/paymentdetails" element={<PrivateRoute><PaymentConfirm/></PrivateRoute>}/>   
