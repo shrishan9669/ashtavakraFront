@@ -49,12 +49,12 @@ export default function Course1() {
                 <span className="font-bold">Note: <span className="font-normal">Second Installment Should be payed on September.</span></span>
                 <span className="font-medium">One-time Payment: ₹7200/-</span>
                 <p className="text-gray-700 leading-relaxed">
-                    If you purchase the course with installments, your referral code will only provide a ₹200 discount, 
-                    and you will earn a ₹200 commission.
+                    If you purchase the course with installments, your referral code will only provide a ₹100 discount, 
+                    and you will earn a ₹150 commission.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
-                    If you purchase the course with full payment, your referral code will provide a ₹100 discount, 
-                    and you will earn a ₹150 commission.
+                    If you purchase the course with full payment, your referral code will provide a ₹200 discount, 
+                    and you will earn a 200 commission.
                 </p>
             </div>
             </div>
