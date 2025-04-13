@@ -54,9 +54,9 @@ export default function PaymentModal({ isOpen, onClose, installment }: any) {
     }
   };
 
-  const totalAmount = installment === '1' 
-    ? (codeAllow ? "₹6,800" : "₹7,200") 
-    : (codeAllow ? "₹3,950" : "₹4,250");
+   const totalAmount = installment === '1' 
+    ? (codeAllow ? "₹7,000" : "₹7,200") 
+    : (codeAllow ? "₹4,150" : "₹4,250");
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-sm">
