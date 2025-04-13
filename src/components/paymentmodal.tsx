@@ -168,7 +168,7 @@ export default function PaymentModal({ isOpen, onClose, installment }: any) {
             {codeAllow && (
               <div className="flex justify-between text-green-600">
                 <span>Discount applied:</span>
-                <span className="font-medium">{installment === '1' ? '₹400 off' : '₹300 off per installment'}</span>
+                <span className="font-medium">{installment === '1' ? '₹200 off' : '₹100 off per installment'}</span>
               </div>
             )}
           </div>
