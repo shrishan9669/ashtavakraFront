@@ -97,7 +97,7 @@ export const SignupModal = ({isOpen,onClose}:any) => {
     const[loading,setLoading]  = useState(false)
     
     // Regex for validating phone number in xxx-xxx-xxxx format
-    const phoneNumberRegex = /^[7-9]{1}[0-9]{9}$/;
+    const phoneNumberRegex = /^[6-9][0-9]{9}$/;
     const regexemail = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
     const handleInputChange = (e:any) => {
         setPhone(e.target.value);
@@ -435,7 +435,7 @@ export const MobileNumberModal = ({ onClose, isOpen }: any) => {
   const [number, setNumber] = useState('');
   const [msg, setMsg] = useState('');
   const [loading, setLoading] = useState(false);
-  const phoneNumberRegex = /^[7-9]{1}[0-9]{9}$/;
+  const phoneNumberRegex = /^[6-9][0-9]{9}$/;
 
   const handlenumberchange = (e: any) => {
     const value = e.target.value;
@@ -681,7 +681,7 @@ function LoginWithPassword({ onClose, isOpen }: { onClose: () => void; isOpen: b
   };
 
   return (
-    <div className='fixed inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-sm z-50 transition-opacity duration-300 ease-in-out'>
+    <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50 transition-opacity duration-300 ease-in-out'>
       <div className='bg-white flex flex-col gap-6 p-8 rounded-xl shadow-xl w-full max-w-md mx-4'>
         <div className='flex justify-between items-center'>
           <h1 className='font-bold text-2xl text-gray-800'>Welcome Back</h1>
