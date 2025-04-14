@@ -13,7 +13,7 @@ export default function PaymentConfirm() {
     const [loading, setLoading] = useState<boolean>(false);
     const [installment,setInstallment] = useState('0');
 
-    const phoneNumberRegex = /^[7-9]{1}[0-9]{9}$/;
+    const phoneNumberRegex = /^[6-9][0-9]{9}$/;
   function handlenumberchange(e:any){
           setNumber(e.target.value)
              console.log(e.target.value)
